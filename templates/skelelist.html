@@ -1,0 +1,72 @@
+<!-- main skelelist template -->
+<template name="skelelist">
+    {{> gearLoading}}
+
+    {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
+</template>
+
+<!-- table list style -->
+<template name="skelelistTable">
+    <table class="{{this.schema.__listView.classes}} responsive-table">
+        <thead>
+            <tr>
+                {{#with this.schema.__listView}}
+                    {{#each this.itemFields}}
+                        <th>{{label this}}</th>
+                    {{/each}}
+                    {{#if this.itemActions}}
+                        <th>{{_ "actions_lbl"}}</th>
+                    {{/if}}
+                {{/with}}
+            </tr>
+        </thead>
+        <tbody>
+            {{#each list}}
+                <tr>
+                    {{#each ../schema.__listView.itemFields}}
+                        {{#with field this .. ../../schema}}
+                            <td>
+                                {{#if this.link}}
+                                    <a href="{{this.link}}">
+                                        {{this.value}}
+                                    </a>
+                                {{else}}
+                                    {{this.value}}
+                                {{/if}}
+                            </td>
+                        {{/with}}
+                    {{/each}}
+                    <td>
+                        {{#with ../schema.__listView.itemActions}}
+                            {{#if this}}
+                                {{> skelelistActions this}}
+                            {{/if}}
+                        {{/with}}
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+
+
+<!-- actions -->
+<template name="skelelistActions">
+    {{#each this}}
+        {{#if (test this "delete")}}
+            <div class="waves-effect waves-light btn secondColor deletePage">
+                <i class="material-icons small left">delete</i>
+                {{_ "delete_btn"}}
+            </div>
+        {{/if}}
+    
+        {{#if (test this "nuke")}}
+            <div class="waves-effect waves-light btn thirdColor">
+                <i class="material-icons small left">warning</i>
+            </div>
+        {{/if}}
+
+    {{/each}}
+
+</template>
