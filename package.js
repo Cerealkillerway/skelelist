@@ -39,7 +39,8 @@ Package.onUse(function(api) {
 
     // libraries
     api.addFiles('namespace.js');
-    api.addFiles('events-helpers/skelelist.js', 'client');
+    api.addFiles('helpers/listHelpers.js', 'client');
+    api.addFiles('events/listEvents.js', 'client');
     
 });
 

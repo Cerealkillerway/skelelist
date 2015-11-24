@@ -60,6 +60,5 @@ Template.skelelist.helpers({
     }
 });
 
-
 // list table view
 Template.skelelistTable.helpers(skelelistGeneralHelpers);
