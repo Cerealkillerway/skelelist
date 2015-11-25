@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            {{#each list}}
+            {{#each paginate this}}
                 <tr data-id="{{this._id}}">
                     {{#each ../schema.__listView.itemFields}}
                         {{#with field this .. ../../schema}}
@@ -45,8 +45,20 @@
             {{/each}}
         </tbody>
     </table>
+
+    {{#if isPaginated this}}
+        {{> skelelistPagination this}}
+    {{/if}}
 </template>
 
+
+<!-- skelelist view link block helper -->
+<template name="skelelistLink">
+    <a href="/panel/pages{{currentLangLink}}">
+        <i class="material-icons small left">find_in_page</i>
+        <div class="navItemName">{{_ "menu_pages"}}</div>
+    </a>
+</template>
 
 
 <!-- actions -->
@@ -59,12 +71,36 @@
             </div>
         {{/if}}
     
-        {{#if (test this "nuke")}}
-            <div class="waves-effect waves-light btn thirdColor">
-                <i class="material-icons small left">warning</i>
+        {{#if (test this "changePassword")}}
+            <div class="waves-effect waves-light btn thirdColor skelelistChangePassword">
+                <i class="material-icons small left">lock</i>
+                {{_ "changePassword_btn"}}
             </div>
         {{/if}}
 
     {{/each}}
 
+</template>
+
+<!-- pagination -->
+<template name="skelelistPagination">
+    <ul class="pagination">
+        <li class="waves-effect waves-light pointer prevPage">
+            <a>
+                <i class="material-icons">chevron_left</i>
+            </a>
+        </li>
+        
+        {{#each pages this}}
+            <li data-number="{{this}}" class="waves-effect waves-light skelelistPageBtn pointer {{isCurrentPage this}}">
+                <div>{{this}}</div>
+            </li>
+        {{/each}}
+        
+        <li class="waves-effect waves-light pointer nextPage">
+            <a>
+                <i class="material-icons">chevron_right</i>
+            </a>
+        </li>
+    </ul>
 </template>

@@ -1,3 +1,6 @@
 {
-    "actions_lbl": "Actions"
+    "actions_lbl": "Actions",
+
+    "delete_btn": "Delete",
+    "changePassword_btn": "Change password"
 }

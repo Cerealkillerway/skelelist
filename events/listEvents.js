@@ -1,8 +1,82 @@
+// skelelist
+Template.skelelist.onRendered(function() {
+    var options = this.data.schema.__listView.options;
+
+    if (options && options.pagination) {
+        if (!FlowRouter.getQueryParam('page')) {
+            FlowRouter.setQueryParams({page: 1});
+        }
+    }
+});
+
 // skelelist actions
 Template.skelelistActions.events({
     "click .skelelistDelete": function(event, template) {
         var id = $(event.target).closest('tr').data('id');
 
         Meteor.call('deleteDocument', id, template.data.schemaName);
+    }
+});
+
+// skelelist pagination
+Template.skelelistPagination.onRendered(function() {
+    var currentPage = parseInt(FlowRouter.getQueryParam('page'));
+    var lastPage = this.lastPage;
+
+    if (currentPage === lastPage) {
+        this.$('.nextPage').addClass('disabled');
+    }
+
+    if (currentPage === 1) {
+        this.$('.prevPage').addClass('disabled');
+    }
+});
+
+Template.skelelistPagination.events({
+    "click .skelelistPageBtn": function(event, template) {
+        var number = $(event.target).closest('li').data('number');
+
+        FlowRouter.setQueryParams({page: number});
+
+        // manage enabling disabling next button
+        if (number === template.lastPage) {
+            template.$('.nextPage').addClass('disabled');
+        }
+        else {
+            template.$('.nextPage').removeClass('disabled');
+        }
+
+        // manage enabling disabling prev button
+        if (number === 1) {
+            template.$('.prevPage').addClass('disabled');
+        }
+        else {
+            template.$('.prevPage').removeClass('disabled');
+        }
+    },
+    "click .nextPage": function(event, template) {
+        var currentPage = parseInt(FlowRouter.getQueryParam('page'));
+        var lastPage = template.lastPage;
+
+        if (currentPage < lastPage) {
+            FlowRouter.setQueryParams({page: currentPage + 1});
+        }
+
+        template.$('.prevPage').removeClass('disabled');
+        if ((currentPage + 1) === lastPage) {
+            $(event.target).closest('li').addClass('disabled');
+        }
+    },
+    "click .prevPage": function(event, template) {
+        var currentPage = parseInt(FlowRouter.getQueryParam('page'));
+
+        if (currentPage > 1) {
+            FlowRouter.setQueryParams({page: currentPage - 1});
+        }
+
+        template.$('.nextPage').removeClass('disabled');
+        if ((currentPage - 1) === 1) {
+            $(event.target).closest('li').addClass('disabled');
+        }
     }
 });
