@@ -8,6 +8,13 @@ Template.skelelist.onRendered(function() {
         }
     }
 });
+Template.skelelist.events({
+    "click .skelelistLink": function(event, template) {
+        var documentId = $(event.target).closest('tr').data('id');
+
+        Session.set('currentItem', documentId);
+    }
+});
 
 // skelelist actions
 Template.skelelistActions.events({

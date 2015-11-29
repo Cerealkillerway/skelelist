@@ -2,7 +2,7 @@ UI.registerHelper('isPaginated', function(schemaName) {
     var options = Skeletor.Schemas[schemaName].__listView.options;
 
     if (options && options.pagination) {
-        return "&page=1"
+        return "&page=1";
     }
     return "";
 });
@@ -22,7 +22,7 @@ skelelistGeneralHelpers = {
     field: function(name, data, schema) {
         if (FlowRouter.subsReady()) {
             var fieldSchema = schema[name];
-            var lang = FlowRouter.getQueryParam("lang");
+            var lang = FlowRouter.getParam("itemLang");
             var result = {};
             var value;
             var listOptions = fieldSchema.__listView;
@@ -34,7 +34,8 @@ skelelistGeneralHelpers = {
                     value = data[lang];
                 }
                 else {
-                    value = name + ' (' + TAPi18n.__('translationTitleNoHTML_missing').toUpperCase() + ')';
+                    value = {};
+                    value[name] = name + ' (' + TAPi18n.__('translationTitleNoHTML_missing').toUpperCase() + ')';
                 }
             }
             else {
@@ -44,6 +45,35 @@ skelelistGeneralHelpers = {
             pathShards.forEach(function(shard, index) {
                 value = value[shard];
             });
+
+            // check if the field should be a link to detail page
+            if (link.params.indexOf(name) >= 0) {
+                var params = {};
+
+                link.params.forEach(function(param, index) {
+                    switch (param) {
+                        case 'itemLang':
+                        params[param] = lang;
+                        break;
+
+                        default:
+                        if (schema[param].i18n === undefined) {
+                            if (data[lang]) {
+                                params[param] = data[lang][param];
+                            }
+                            else {
+                                value = TAPi18n.__('general_missing');
+                                params[param] = "missing";
+                            }
+                        }
+                        else {
+                            params[param] = data[param];
+                        }
+                    }
+                });
+
+                result.link = FlowRouter.path(link.basePath, params, {lang: lang});
+            }
 
             // applies field's listview options
             if (listOptions) {
@@ -55,16 +85,6 @@ skelelistGeneralHelpers = {
                 }
             }
 
-            // check if the field should be a link to detail page
-            if (link.params.indexOf(name) >= 0) {
-                var params = {};
-
-                link.params.forEach(function(param, index) {
-                    params[param] = data[param];
-                });
-
-                result.link = FlowRouter.path(link.basePath, params, {lang: lang});
-            }
 
             result.value = value;
             return result;
@@ -77,8 +97,18 @@ skelelistGeneralHelpers = {
         var findOptions = {};
         var list;
 
+        // build sort object managing lang dependant attributes
         if (sort) {
-            findOptions.sort = sort;
+            findOptions.sort = {};
+
+            _.keys(sort).forEach(function(sortOption, index) {
+                if (data.schema[sortOption].i18n === undefined) {
+                    findOptions.sort[FlowRouter.getParam('itemLang') + '.' + sortOption] = sort[sortOption];
+                }
+                else {
+                    findOptions.sort[sortOption] = sort[sortOption];
+                }
+            });
         }
 
         // get paginated data
@@ -105,7 +135,7 @@ skelelistGeneralHelpers = {
         }
         return false;
     }
-}
+};
 
 
 // skelelist
