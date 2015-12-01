@@ -2,6 +2,8 @@
 Template.skelelist.onRendered(function() {
     var options = this.data.schema.__listView.options;
 
+    $('body').scrollTop(0);
+
     if (options && options.pagination) {
         if (!FlowRouter.getQueryParam('page')) {
             FlowRouter.setQueryParams({page: 1});
@@ -12,6 +14,8 @@ Template.skelelist.events({
     "click .skelelistLink": function(event, template) {
         var documentId = $(event.target).closest('tr').data('id');
 
+        // set document id in order to let skeletor find it in case
+        // it is not yet translated for current lang
         Session.set('currentItem', documentId);
     }
 });

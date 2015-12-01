@@ -13,6 +13,9 @@ Package.describe({
 Package.onUse(function(api) {
     api.versionsFrom('1.2.1');
 
+    // namespace
+    api.addFiles('namespace.js');
+
     // packages
     api.use('jquery', 'client');
     api.use('underscore@1.0.0');
@@ -38,7 +41,6 @@ Package.onUse(function(api) {
     api.addFiles('i18n/en.i18n.json');
 
     // libraries
-    api.addFiles('namespace.js');
     api.addFiles('helpers/listHelpers.js', 'client');
     api.addFiles('events/listEvents.js', 'client');
     

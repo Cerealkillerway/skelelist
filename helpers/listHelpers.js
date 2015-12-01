@@ -25,6 +25,7 @@ skelelistGeneralHelpers = {
             var lang = FlowRouter.getParam("itemLang");
             var result = {};
             var value;
+            var listViewOptions = schema.__listView;
             var listOptions = fieldSchema.__listView;
             var link = schema.__listView.detailLink;
             var pathShards = name.split('.');
@@ -45,6 +46,32 @@ skelelistGeneralHelpers = {
             pathShards.forEach(function(shard, index) {
                 value = value[shard];
             });
+
+            // if the value is a data source -> find the source attribute
+            if (listViewOptions.sourcedFields && listViewOptions.sourcedFields[name] !== undefined) {
+                var source = fieldSchema.source;
+                var sourceOptions = listViewOptions.sourcedFields[name];
+                var sourceDocument = Skeletor.Data[sourceOptions.collection].findOne({_id: value});
+
+                if (sourceDocument) {
+                    var nameAttr = sourceDocument;
+
+                    sourceOptions.mapTo.split('.').forEach(function(nameShard, index) {
+                        switch (nameShard) {
+                            case ':itemLang':
+                            nameAttr = nameAttr[lang];
+                            break;
+
+                            default:
+                            nameAttr = nameAttr[nameShard];
+                        }
+                    });
+                    value = nameAttr;
+                }
+                else {
+                    value = TAPi18n.__('none_lbl');
+                }
+            }
 
             // check if the field should be a link to detail page
             if (link.params.indexOf(name) >= 0) {
