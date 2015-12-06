@@ -23,6 +23,7 @@ skelelistGeneralHelpers = {
         if (FlowRouter.subsReady()) {
             var fieldSchema = schema[name];
             var lang = FlowRouter.getParam("itemLang");
+            var UIlang = FlowRouter.getQueryParam('lang');
             var result = {};
             var value;
             var listViewOptions = schema.__listView;
@@ -99,7 +100,7 @@ skelelistGeneralHelpers = {
                     }
                 });
 
-                result.link = FlowRouter.path(link.basePath, params, {lang: lang});
+                result.link = FlowRouter.path(link.basePath, params, {lang: UIlang});
             }
 
             // applies field's listview options

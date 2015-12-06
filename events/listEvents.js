@@ -2,7 +2,7 @@
 Template.skelelist.onRendered(function() {
     var options = this.data.schema.__listView.options;
 
-    $('body').scrollTop(0);
+    ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 
     if (options && options.pagination) {
         if (!FlowRouter.getQueryParam('page')) {
@@ -64,6 +64,8 @@ Template.skelelistPagination.events({
         else {
             template.$('.prevPage').removeClass('disabled');
         }
+
+        ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
     "click .nextPage": function(event, template) {
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
@@ -77,6 +79,8 @@ Template.skelelistPagination.events({
         if ((currentPage + 1) === lastPage) {
             $(event.target).closest('li').addClass('disabled');
         }
+
+        ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
     "click .prevPage": function(event, template) {
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
@@ -89,5 +93,7 @@ Template.skelelistPagination.events({
         if ((currentPage - 1) === 1) {
             $(event.target).closest('li').addClass('disabled');
         }
+
+        ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     }
 });

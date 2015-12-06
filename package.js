@@ -1,6 +1,6 @@
 Package.describe({
     name: 'cerealkiller:skelelist',
-    version: '0.0.1',
+    version: '0.0.2',
     // Brief, one-line summary of the package.
     summary: 'collection views',
     // URL to the Git repository containing the source code for this package.
@@ -25,7 +25,7 @@ Package.onUse(function(api) {
     api.use('materialize:materialize@0.97.3', 'client');
     api.use('cerealkiller:utils');
     // if skeletor is in use, load it before
-    api.use('cerealkiller:skeletor@0.0.1', {weak: true});
+    api.use('cerealkiller:skeletor@0.0.3', {weak: true});
 
     // exports
     api.export('Skelelist');   // package namespace
