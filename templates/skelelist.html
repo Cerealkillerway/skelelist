@@ -7,6 +7,10 @@
 
 <!-- table list style -->
 <template name="skelelistTable">
+    {{#if isTranslatable}}
+        {{> skelelistLangBar}}
+    {{/if}}
+
     <table class="{{this.schema.__listView.classes}} responsive-table">
         <thead>
             <tr>
@@ -103,4 +107,15 @@
             </a>
         </li>
     </ul>
+</template>
+
+<!-- list lang bar -->
+<template name="skelelistLangBar">
+    <div class="skelelistLangs right">
+        {{#each langs}}
+            <div class="langFlag {{isActive this}}" data-lang="{{this}}">
+                <img src="/images/icons/lang/{{this}}.jpg">
+            </div>
+        {{/each}}
+    </div>
 </template>

@@ -31,7 +31,7 @@ Package.onUse(function(api) {
     api.export('Skelelist');   // package namespace
 
     // styles
-
+    api.addFiles('styles/skelelist.scss', 'client');
 
     // templates
     api.addFiles('templates/skelelist.html', 'client');

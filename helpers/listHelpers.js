@@ -23,6 +23,7 @@ skelelistGeneralHelpers = {
         if (FlowRouter.subsReady()) {
             var fieldSchema = schema[name];
             var lang = FlowRouter.getParam("itemLang");
+            var defaultLang = Skeletor.configuration.lang.default;
             var UIlang = FlowRouter.getQueryParam('lang');
             var result = {};
             var value;
@@ -30,14 +31,15 @@ skelelistGeneralHelpers = {
             var listOptions = fieldSchema.__listView;
             var link = schema.__listView.detailLink;
             var pathShards = name.split('.');
+            var fieldMissingTranslation = false;
 
             if (fieldSchema.i18n === undefined) {
                 if (data[lang] && data[lang][name]) {
                     value = data[lang];
                 }
                 else {
-                    value = {};
-                    value[name] = name + ' (' + TAPi18n.__('translationTitleNoHTML_missing').toUpperCase() + ')';
+                    value = data[defaultLang];
+                    fieldMissingTranslation = true;
                 }
             }
             else {
@@ -56,18 +58,31 @@ skelelistGeneralHelpers = {
 
                 if (sourceDocument) {
                     var nameAttr = sourceDocument;
+                    var missingTranslation = false;
 
                     sourceOptions.mapTo.split('.').forEach(function(nameShard, index) {
                         switch (nameShard) {
                             case ':itemLang':
-                            nameAttr = nameAttr[lang];
+                            if (nameAttr[lang]) {
+                                nameAttr = nameAttr[lang];
+                            }
+                            else {
+                                nameAttr = nameAttr[defaultLang];
+                                missingTranslation = true;
+                            }
                             break;
 
                             default:
                             nameAttr = nameAttr[nameShard];
                         }
                     });
-                    value = nameAttr;
+
+                    if (missingTranslation) {
+                        value = '#(' + nameAttr + ')';
+                    }
+                    else {
+                        value = nameAttr;
+                    }
                 }
                 else {
                     value = TAPi18n.__('none_lbl');
@@ -90,8 +105,7 @@ skelelistGeneralHelpers = {
                                 params[param] = data[lang][param];
                             }
                             else {
-                                value = TAPi18n.__('general_missing');
-                                params[param] = "missing";
+                                params[param] = data[defaultLang][param];
                             }
                         }
                         else {
@@ -113,8 +127,12 @@ skelelistGeneralHelpers = {
                 }
             }
 
-
-            result.value = value;
+            if (fieldMissingTranslation) {
+                result.value = '#(' + value + ')';
+            }
+            else {
+                result.value = value;
+            }
             return result;
         }
     },
@@ -162,6 +180,12 @@ skelelistGeneralHelpers = {
             return true;
         }
         return false;
+    },
+    isTranslatable: function() {
+        if (FlowRouter.getParam('itemLang')) {
+            return true;
+        }
+        return false;
     }
 };
 
@@ -195,5 +219,27 @@ Template.skelelistPagination.helpers({
             return "active";
         }
         return "";
+    }
+});
+
+// list lang bar
+Template.skelelistLangBar.helpers({
+    langs: function() {
+        var result = [];
+
+        if (Skeletor.GlobalConf) {
+            _.each(Skeletor.GlobalConf.langEnable, function(value, key) {
+                if (value) {
+                    result.push(key);
+                }
+            });
+
+            return result;
+        }
+    },
+    isActive: function(buttonLang) {
+        if (FlowRouter.getParam('itemLang') === buttonLang) {
+            return 'active';
+        }
     }
 });

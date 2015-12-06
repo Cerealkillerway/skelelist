@@ -1,0 +1,27 @@
+// app colors
+@import "{}/client/styles/panelColors";
+
+
+
+.skelelistLangs {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 25px;
+
+    .langFlag {
+        float: left;
+        margin: 3px 4px;
+        
+        img {
+            max-height: 30px;
+            border: solid 3px darken($thirdColorBorder, 10%);
+            cursor: pointer !important;
+        }
+
+        &.active {
+            img {
+                border-color: $firstHoverColor;
+            }
+        }
+    }
+}

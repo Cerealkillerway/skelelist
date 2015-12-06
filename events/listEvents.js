@@ -97,3 +97,11 @@ Template.skelelistPagination.events({
         ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     }
 });
+
+Template.skelelistLangBar.events({
+    "click .langFlag": function(event, template) {
+        var newLang = $(event.target).closest('.langFlag').data('lang');
+
+        FlowRouter.setParams({'itemLang': newLang});
+    }
+});
