@@ -21,7 +21,9 @@ skelelistGeneralHelpers = {
     },
     field: function(name, data, schema) {
         if (FlowRouter.subsReady()) {
-            var fieldSchema = schema[name];
+            var fieldSchema = $.grep(schema.fields, function(field){
+                    return field.name == name;
+                });
             var lang = FlowRouter.getParam("itemLang");
             var defaultLang = Skeletor.configuration.lang.default;
             var UIlang = FlowRouter.getQueryParam('lang');
@@ -33,7 +35,7 @@ skelelistGeneralHelpers = {
             var pathShards = name.split('.');
             var fieldMissingTranslation = false;
 
-            if (fieldSchema.i18n === undefined) {
+            if (fieldSchema[0].i18n === undefined) {
                 if (data[lang] && data[lang][name]) {
                     value = data[lang];
                 }
@@ -100,7 +102,7 @@ skelelistGeneralHelpers = {
                         break;
 
                         default:
-                        if (schema[param].i18n === undefined) {
+                        if (fieldSchema[0].i18n === undefined) {
                             if (data[lang]) {
                                 params[param] = data[lang][param];
                             }
@@ -148,7 +150,11 @@ skelelistGeneralHelpers = {
             findOptions.sort = {};
 
             _.keys(sort).forEach(function(sortOption, index) {
-                if (data.schema[sortOption].i18n === undefined) {
+                var fieldSchema = $.grep(data.schema.fields, function(field){
+                    return field.name == sortOption;
+                });
+
+                if (fieldSchema[0].i18n === undefined) {
                     findOptions.sort[FlowRouter.getParam('itemLang') + '.' + sortOption] = sort[sortOption];
                 }
                 else {
