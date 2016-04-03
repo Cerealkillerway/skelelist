@@ -94,6 +94,7 @@ skelelistGeneralHelpers = {
             // check if the field should be a link to detail page
             if (link.params.indexOf(name) >= 0) {
                 var params = {};
+                var segmentLang = FlowRouter.getParam('itemLang');
 
                 link.params.forEach(function(param, index) {
                     switch (param) {
@@ -108,6 +109,7 @@ skelelistGeneralHelpers = {
                             }
                             else {
                                 params[param] = data[defaultLang][param];
+                                segmentLang = defaultLang;
                             }
                         }
                         else {
@@ -116,7 +118,7 @@ skelelistGeneralHelpers = {
                     }
                 });
 
-                result.link = FlowRouter.path(link.basePath, params, {lang: UIlang});
+                result.link = FlowRouter.path(link.basePath, params, {lang: UIlang, sLang: segmentLang});
             }
 
             // applies field's listview options

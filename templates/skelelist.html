@@ -74,7 +74,7 @@
                 {{_ "delete_btn"}}
             </div>
         {{/if}}
-    
+
         {{#if (test this "changePassword")}}
             <div class="waves-effect waves-light btn thirdColor skelelistChangePassword">
                 <i class="material-icons small left">lock</i>
@@ -94,13 +94,13 @@
                 <i class="material-icons">chevron_left</i>
             </a>
         </li>
-        
+
         {{#each pages this}}
             <li data-number="{{this}}" class="waves-effect waves-light skelelistPageBtn pointer {{isCurrentPage this}}">
                 <div>{{this}}</div>
             </li>
         {{/each}}
-        
+
         <li class="waves-effect waves-light pointer nextPage">
             <a>
                 <i class="material-icons">chevron_right</i>
