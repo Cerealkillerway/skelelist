@@ -11,8 +11,6 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-    api.versionsFrom('1.2.1');
-
     // namespace
     api.addFiles('namespace.js');
 
@@ -43,7 +41,7 @@ Package.onUse(function(api) {
     // libraries
     api.addFiles('helpers/listHelpers.js', 'client');
     api.addFiles('events/listEvents.js', 'client');
-    
+
 });
 
 Package.onTest(function(api) {
