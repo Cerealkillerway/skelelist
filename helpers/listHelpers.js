@@ -35,22 +35,24 @@ skelelistGeneralHelpers = {
             var pathShards = name.split('.');
             var fieldMissingTranslation = false;
 
+
             if (fieldSchema[0].i18n === undefined) {
-                if (data[lang] && data[lang][name]) {
-                    value = data[lang];
+                if (data[lang + '---' + name]) {
+                    value = data[lang + '---' + name];
                 }
                 else {
-                    value = data[defaultLang];
+                    value = data[defaultLang + '---' + name];
                     fieldMissingTranslation = true;
                 }
             }
             else {
                 value = data;
-            }
 
-            pathShards.forEach(function(shard, index) {
-                value = value[shard];
-            });
+                pathShards.forEach(function(pathShard, index) {
+                    value = value[pathShard];
+                });
+                //value = data[name];
+            }
 
             // if the value is a data source -> find the source attribute
             if (listViewOptions.sourcedFields && listViewOptions.sourcedFields[name] !== undefined) {
@@ -63,18 +65,18 @@ skelelistGeneralHelpers = {
                     var missingTranslation = false;
 
                     sourceOptions.mapTo.split('.').forEach(function(nameShard, index) {
-                        switch (nameShard) {
-                            case ':itemLang':
-                            if (nameAttr[lang]) {
-                                nameAttr = nameAttr[lang];
+                        if (nameShard.indexOf(':itemLang---') === 0) {
+                            var nameOnly = nameShard.substring(12, nameShard.length);
+
+                            if (nameAttr[lang + '---' + nameOnly]) {
+                                nameAttr = nameAttr[lang + '---' + nameOnly];
                             }
                             else {
-                                nameAttr = nameAttr[defaultLang];
+                                nameAttr = nameAttr[defaultLang + '---' + nameOnly];
                                 missingTranslation = true;
                             }
-                            break;
-
-                            default:
+                        }
+                        else {
                             nameAttr = nameAttr[nameShard];
                         }
                     });
@@ -104,11 +106,11 @@ skelelistGeneralHelpers = {
 
                         default:
                         if (fieldSchema[0].i18n === undefined) {
-                            if (data[lang]) {
-                                params[param] = data[lang][param];
+                            if (data[lang + '---' + param]) {
+                                params[param] = data[lang + '---' + param];
                             }
                             else {
-                                params[param] = data[defaultLang][param];
+                                params[param] = data[defaultLang + '---' + param];
                                 segmentLang = defaultLang;
                             }
                         }
