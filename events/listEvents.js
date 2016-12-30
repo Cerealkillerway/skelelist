@@ -2,7 +2,7 @@
 Template.skelelist.onRendered(function() {
     var options = this.data.schema.__listView.options;
 
-    ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+    skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 
     if (options && options.pagination) {
         if (!FlowRouter.getQueryParam('page')) {
@@ -65,7 +65,7 @@ Template.skelelistPagination.events({
             template.$('.prevPage').removeClass('disabled');
         }
 
-        ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
     "click .nextPage": function(event, template) {
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
@@ -80,7 +80,7 @@ Template.skelelistPagination.events({
             $(event.target).closest('li').addClass('disabled');
         }
 
-        ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
     "click .prevPage": function(event, template) {
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
@@ -94,7 +94,7 @@ Template.skelelistPagination.events({
             $(event.target).closest('li').addClass('disabled');
         }
 
-        ckUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     }
 });
 
