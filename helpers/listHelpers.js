@@ -2,9 +2,9 @@ UI.registerHelper('isPaginated', function(schemaName) {
     var options = Skeletor.Schemas[schemaName].__listView.options;
 
     if (options && options.pagination) {
-        return "&page=1";
+        return '&page=1';
     }
-    return "";
+    return '';
 });
 
 
@@ -16,7 +16,7 @@ skelelistGeneralHelpers = {
         switch(options) {
 
             default:
-            return TAPi18n.__(name + "_lbl");
+            return TAPi18n.__(name + '_lbl');
         }
     },
     field: function(name, data, schema) {
@@ -24,7 +24,7 @@ skelelistGeneralHelpers = {
             var fieldSchema = $.grep(schema.fields, function(field){
                     return field.name == name;
                 });
-            var lang = FlowRouter.getParam("itemLang");
+            var lang = FlowRouter.getParam('itemLang');
             var defaultLang = Skeletor.configuration.lang.default;
             var UIlang = FlowRouter.getQueryParam('lang');
             var result = {};
@@ -207,8 +207,10 @@ Template.skelelist.helpers({
     }
 });
 
+
 // list table view
 Template.skelelistTable.helpers(skelelistGeneralHelpers);
+
 
 // pagination template
 Template.skelelistPagination.helpers({
@@ -226,11 +228,12 @@ Template.skelelistPagination.helpers({
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
 
         if (pageNumber === currentPage) {
-            return "active";
+            return 'active';
         }
-        return "";
+        return '';
     }
 });
+
 
 // list lang bar
 Template.skelelistLangBar.helpers({

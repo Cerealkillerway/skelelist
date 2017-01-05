@@ -11,7 +11,7 @@
     .langFlag {
         float: left;
         margin: 3px 4px;
-        
+
         img {
             max-height: 30px;
             border: solid 3px darken($thirdColorBorder, 10%);
@@ -22,6 +22,14 @@
             img {
                 border-color: $firstHoverColor;
             }
+        }
+    }
+}
+
+.skelelistActions {
+    .btn {
+        &:not(:last-child) {
+            margin-right: 5px;
         }
     }
 }

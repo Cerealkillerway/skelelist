@@ -11,7 +11,7 @@ Template.skelelist.onRendered(function() {
     }
 });
 Template.skelelist.events({
-    "click .skelelistLink": function(event, template) {
+    'click .skelelistLink': function(event, template) {
         var documentId = $(event.target).closest('tr').data('id');
 
         // set document id in order to let skeletor find it in case
@@ -20,14 +20,39 @@ Template.skelelist.events({
     }
 });
 
-// skelelist actions
-Template.skelelistActions.events({
-    "click .skelelistDelete": function(event, template) {
-        var id = $(event.target).closest('tr').data('id');
 
-        Meteor.call('deleteDocument', id, template.data.schemaName);
+// skelelist actions container
+Template.skelelistActions.onRendered(function() {
+    var self = this;
+    var data = self.data;
+    var actions = data.schemaInfo.schema.__listView.itemActions;
+    var dataContext = {
+        record: data.record,
+        schemaInfo: data.schemaInfo
+    };
+
+    actions.forEach(function(action, index) {
+        var templateToRender = Template['skelelistAction' + action.capitalize()];
+
+        if (templateToRender !== undefined) {
+            Blaze.renderWithData(templateToRender, dataContext, self.$('.skelelistActions')[0]);
+        }
+        else {
+            skeleUtils.globalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError');
+        }
+    });
+});
+
+// skelelist actions
+Template.skelelistActionDelete.events({
+    'click .skelelistDelete': function(event, template) {
+        var data = template.data;
+        var id = data.record._id;
+
+        Meteor.call('deleteDocument', id, data.schemaInfo.schemaName);
     }
 });
+
 
 // skelelist pagination
 Template.skelelistPagination.onRendered(function() {
@@ -43,8 +68,9 @@ Template.skelelistPagination.onRendered(function() {
     }
 });
 
+
 Template.skelelistPagination.events({
-    "click .skelelistPageBtn": function(event, template) {
+    'click .skelelistPageBtn': function(event, template) {
         var number = $(event.target).closest('li').data('number');
 
         FlowRouter.setQueryParams({page: number});
@@ -67,7 +93,7 @@ Template.skelelistPagination.events({
 
         skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
-    "click .nextPage": function(event, template) {
+    'click .nextPage': function(event, template) {
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
         var lastPage = template.lastPage;
 
@@ -82,7 +108,7 @@ Template.skelelistPagination.events({
 
         skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
-    "click .prevPage": function(event, template) {
+    'click .prevPage': function(event, template) {
         var currentPage = parseInt(FlowRouter.getQueryParam('page'));
 
         if (currentPage > 1) {
@@ -98,8 +124,9 @@ Template.skelelistPagination.events({
     }
 });
 
+
 Template.skelelistLangBar.events({
-    "click .langFlag": function(event, template) {
+    'click .langFlag': function(event, template) {
         var newLang = $(event.target).closest('.langFlag').data('lang');
 
         FlowRouter.setParams({'itemLang': newLang});
