@@ -212,6 +212,23 @@ Template.skelelist.helpers({
 Template.skelelistTable.helpers(skelelistGeneralHelpers);
 
 
+// actions
+// change password
+Template.skelelistActionChangePassword.helpers({
+    data: function() {
+        var instance = Template.instance();
+        var context = {
+            schemaName: 'Users_changePassword',
+            schema: Skeletor.Schemas.Users_changePassword,
+            item: instance.data.record,
+            btnInstance: instance
+        };
+
+        return context;
+    }
+});
+
+
 // pagination template
 Template.skelelistPagination.helpers({
     pages: function(data) {

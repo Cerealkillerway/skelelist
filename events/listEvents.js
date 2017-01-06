@@ -44,12 +44,48 @@ Template.skelelistActions.onRendered(function() {
 });
 
 // skelelist actions
+// delete
 Template.skelelistActionDelete.events({
     'click .skelelistDelete': function(event, template) {
         var data = template.data;
         var id = data.record._id;
 
         Meteor.call('deleteDocument', id, data.schemaInfo.schemaName);
+    }
+});
+
+// change password
+Template.skelelistActionChangePassword.events({
+    'click .skelelistChangePassword': function(event, template) {
+        var data = template.data;
+        var id = data.record._id;
+        var item = Meteor.users.findOne({_id: id});
+
+        template.$('#skeletorUserChangePasswordModal').openModal();
+        template.$('#skeletorUserChangePasswordModal').find('input:first').focusWithoutScrolling();
+    }
+});
+// user change password toolbar
+Template.userChangePasswordToolbar.events({
+    'click .undoChangePassword': function(event, template) {
+        template.data.btnInstance.$('#skeletorUserChangePasswordModal').closeModal();
+    },
+    'click .skeleformChangePassword': function(event, template) {
+        var formContext = template.data;
+        var Fields = template.data.Fields;
+        var data = Skeleform.utils.skeleformGatherData(formContext, Fields);
+
+        if (Skeleform.utils.skeleformValidateForm(data, Fields)) {
+            Meteor.call('updateUserPassword', template.data.item._id, $('#newPassword').val(), function(error, result) {
+                if (error) {
+                    Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                }
+                else {
+                    Materialize.toast(TAPi18n.__('passwordCanged_msg', template.data.item.username), 5000, 'success');
+                    $('#skeletorUserChangePasswordModal').closeModal();
+                }
+            });
+        }
     }
 });
 

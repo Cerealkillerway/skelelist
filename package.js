@@ -23,6 +23,8 @@ Package.onUse(function(api) {
     api.use('cerealkiller:skeleutils');
     // if skeletor is in use, load it before
     api.use('cerealkiller:skeletor@0.0.3', {weak: true});
+    // need skeleform, but allow it to be loaded last
+    api.use('cerealkiller:skeleform@0.0.3');
 
     // exports
     api.export('Skelelist');   // package namespace
