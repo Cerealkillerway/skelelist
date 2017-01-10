@@ -2,7 +2,11 @@
 <template name="skelelist">
     {{> gearLoading}}
 
-    {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
+    {{#with data}}
+        {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
+    {{/with}}
+
+    <div class="skelelistModals"></div>
 </template>
 
 <!-- table list style -->
@@ -41,7 +45,7 @@
                         {{/with}}
                     {{/each}}
 
-                    {{> skelelistActions schemaInfo=.. record=this}}
+                    {{> skelelistActions (actionsData this)}}
                 </tr>
             {{/each}}
         </tbody>
@@ -65,7 +69,7 @@
 <!-- skelelist actions container -->
 <template name="skelelistActions">
     <!-- if actions are defined on schema, include the actions template -->
-    {{#if this.schemaInfo.schema.__listView.itemActions}}
+    {{#if this.schema.__listView.itemActions}}
         <td class="skelelistActions"></td>
     {{/if}}
 </template>
@@ -87,16 +91,18 @@
         <i class="material-icons small left">lock</i>
         {{_ "changePassword_btn"}}
     </div>
+</template>
 
-    <!-- change password modal -->
+<!-- change password modal -->
+<template name="skelelistActionChangePasswordModal">
     <div id="skeletorUserChangePasswordModal" class="modal modal-fixed-footer">
         <div class="modal-content">
             <div class="vSpaced">
-                <h3>{{item.username}}</h3>
+                item: <h3>{{skelelistInstance.data.changePasswordModalRecord.item.username}}</h3>
                 <h5>{{_ "changePasswordTitle_lbl"}}</h5>
             </div>
 
-            {{> skeleform data}}
+            <div id="skeletorUserChangePasswordForm"></div>
         </div>
         <div class="modal-footer" id="skeletorUserChangePasswordToolbar"></div>
     </div>
