@@ -1,17 +1,6 @@
 // skelelist
 Template.skelelist.onRendered(function() {
-    let listProps = this.data.schema.__listView;
-    let options = listProps.options;
-
-    listProps.itemActions.forEach((action) => {
-        // if there is any actions that requires a modal, add it to the modals' container
-        let modalName = 'skelelistAction' + action.capitalize() + 'Modal';
-        let modalToRender = Template[modalName];
-
-        if (modalToRender) {
-            Blaze.renderWithData(modalToRender, this.data, this.$('.skelelistModals')[0]);
-        }
-    });
+    let options = this.data.schema.__listView.options;
 
     skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 
@@ -73,47 +62,57 @@ Template.skelelistActionChangePassword.events({
             schemaName: 'Users_changePassword',
             schema: Skeletor.Schemas.Users_changePassword,
             item: instance.data.record,
-            actionInstance: instance
+            openModal: true
+            //actionInstance: instance
         };
-        let $modal = data.skelelistInstance.$('#skeletorUserChangePasswordModal');
-        let skelelistInstance = data.skelelistInstance;
-        let modalName = 'skelelistActionChangePasswordModal';
 
-        skelelistInstance.data.changePasswordModalFormView = Blaze.renderWithData(
-            Template.skeleform,
-            context,
-            skelelistInstance.$('#skeletorUserChangePasswordForm')[0]
-        );
-        $modal.modal('open');
-        $modal.find('input:first').focusWithoutScrolling();
+        // every change password template has its own "skelelistActionChangePasswordModal" div that is meant to contain the change password's modal
+        // anyway the modal itself is rendered only now and destroyed when closing it, to ensure only one modal of this type is rendered at a time
+        Blaze.renderWithData(Template.skelelistActionChangePasswordModal, context, instance.$('.skelelistActionChangePasswordModalWrapper')[0]);
     }
 });
 // change password modal
 Template.skelelistActionChangePasswordModal.onRendered(function () {
-    this.$('#skeletorUserChangePasswordModal').modal({
+    let $modal = this.$('#skeletorUserChangePasswordModal');
+
+    $modal.modal({
+        ready: () => {
+            Blaze.renderWithData(
+                Template.skeleform, this.data, this.$('#skeletorUserChangePasswordForm')[0]
+            );
+            $modal.find('input:first').focusWithoutScrolling();
+        },
+
         complete: () => {
-            Blaze.remove(this.data.changePasswordModalFormView);
+            Blaze.remove(this.view);
         }
     });
+
+    // if required, open the modal now
+    if (this.data.openModal) {
+        $modal.modal('open');
+    }
 });
 // user change password toolbar
 Template.userChangePasswordToolbar.events({
     'click .undoChangePassword': function(event, instance) {
-        Blaze.remove(instance.data.actionInstance.form);
-        instance.data.actionInstance.$('#skeletorUserChangePasswordModal').modal('close');
+        let $modal = $(event.target).closest('#skeletorUserChangePasswordModal');
+
+        $modal.modal('close');
     },
     'click .skeleformChangePassword': function(event, instance) {
-        let formContext = instance.data;
+        let data = instance.data;
+        let formContext = data.formContext;
         let Fields = instance.data.Fields;
-        let data = Skeleform.utils.skeleformGatherData(formContext, Fields);
+        let gatheredData = Skeleform.utils.skeleformGatherData(data, Fields);
 
-        if (Skeleform.utils.skeleformValidateForm(data, Fields)) {
-            Meteor.call('updateUserPassword', instance.data.formContext.item._id, $('#newPassword').val(), function(error, result) {
+        if (Skeleform.utils.skeleformValidateForm(gatheredData, Fields)) {
+            Meteor.call('updateUserPassword', formContext.item._id, $('#newPassword').val(), function(error, result) {
                 if (error) {
                     Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
                 }
                 else {
-                    Materialize.toast(TAPi18n.__('passwordCanged_msg', instance.data.formContext.item.username), 5000, 'success');
+                    Materialize.toast(TAPi18n.__('passwordCanged_msg', formContext.item.username), 5000, 'success');
                     $('#skeletorUserChangePasswordModal').modal('close');
                 }
             });

@@ -3,5 +3,5 @@
 
     "delete_btn": "Delete",
     "changePassword_btn": "Change password",
-    "changePasswordTitle_lbl": "Password change..."
+    "changePasswordTitle_lbl": "Change password for:"
 }

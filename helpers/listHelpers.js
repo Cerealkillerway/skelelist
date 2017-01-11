@@ -19,8 +19,8 @@ skelelistGeneralHelpers = {
             return TAPi18n.__(name + '_lbl');
         }
     },
-    field: function(name, data, schema) {
-        if (FlowRouter.subsReady()) {
+    field: function(name, data, schema, listTemplateinstance) {
+        if (listTemplateinstance.skeleSubsReady.get()) {
             let fieldSchema = $.grep(schema.fields, function(field){
                     return field.name == name;
                 });
@@ -204,13 +204,6 @@ skelelistGeneralHelpers = {
 Template.skelelist.helpers({
     listStyle: function(style) {
         return 'skelelist' + style.capitalize();
-    },
-    data: function() {
-        const instance = Template.instance();
-        let data = instance.data;
-
-        data.skelelistInstance = instance;
-        return data;
     }
 });
 
