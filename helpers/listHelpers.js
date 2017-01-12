@@ -1,4 +1,4 @@
-UI.registerHelper('isPaginated', function(schemaName) {
+Template.registerHelper('isPaginated', function(schemaName) {
     let options = Skeletor.Schemas[schemaName].__listView.options;
 
     if (options && options.pagination) {

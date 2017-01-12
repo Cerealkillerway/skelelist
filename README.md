@@ -16,7 +16,8 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 - - **style**: *[string] (mandatory)*type of list to create; default "table";
 - - **classes**: *[string] (optional)* CSS classes to assign to the listView;
 - - **itemFields**: *[array of strings] (mandatory)* list of fields to use in the listView;
-- - **itemActions**: *[array of strings] (mandatory)* list of actions to use for each document in the list; (built in actions: "delete", "changePassword");
+- - **itemActions**: *[array of objects] (mandatory)* dictionary of actions to use for each document in the list; (built in actions: "delete", "changePassword");
+- - - **name**: *[string] (required)* the name of the action to render; the name of the action component must be *"skelelistAction" + name.capitalize()*;
 - - **detailLink**: *[object] (mandatory)* definition of the link for detail view
 - - - **basePath**: *[string] (mandatory)* the path definition for the link
 - - - **params**: *[array of strings] (optional)* list of the params used in the previous *basePath*;

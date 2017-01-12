@@ -26,14 +26,23 @@ Template.skelelist.events({
 Template.skelelistActions.onRendered(function() {
     let data = this.data;
     let actions = data.schema.__listView.itemActions;
+    let actionNames = _.map(actions, function(action){
+        return action.name;
+    });
 
     // render all needed actions
-    actions.forEach((action, index) => {
+    actionNames.forEach((action, index) => {
         let templateName = 'skelelistAction' + action.capitalize();
         let templateToRender = Template[templateName];
 
+        // add the action options to the data context for the action template
+        let actionData = {};
+
+        _.extend(actionData, data);
+        actionData.actionOptions = actions[index];
+
         if (templateToRender !== undefined) {
-            Blaze.renderWithData(templateToRender, data, this.$('.skelelistActions')[0]);
+            Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
         }
         else {
             skeleUtils.globalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError');
@@ -48,7 +57,7 @@ Template.skelelistActionDelete.events({
         let data = instance.data;
         let id = data.record._id;
 
-        Meteor.call('deleteDocument', id, data.schemaInfo.schemaName);
+        Meteor.call('deleteDocument', id, data.schemaName);
     }
 });
 
@@ -74,6 +83,9 @@ Template.skelelistActionChangePassword.events({
 // change password modal
 Template.skelelistActionChangePasswordModal.onRendered(function () {
     let $modal = this.$('#skeletorUserChangePasswordModal');
+    // TO IMPROVE (would be better for this form to make its own subscription in order to be possible to use it everywhere)
+    // since this form makes no subscriptions, mark data ready...
+    this.data.skeleSubsReady = new ReactiveVar(true);
 
     $modal.modal({
         ready: () => {
