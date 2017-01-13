@@ -46,7 +46,7 @@ Template.skelelistActions.onRendered(function() {
             Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
         }
         else {
-            skeleUtils.globalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError');
+            skeleUtils.globalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError', false, true);
         }
     });
 });
@@ -70,7 +70,7 @@ Template.skelelistActionDelete.events({
                 Blaze.renderWithData(confirmTemplate, data, $extrasContainer[0]);
             }
             else {
-                skeleUtils.globalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError');
+                skeleUtils.globalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError', false, true);
             }
             // hide action buttons block
             data.actionContainerInstance.$('.skelelistActions').hide(0);
@@ -112,6 +112,15 @@ Template.skelelistActionDeleteTimerConfirm.onRendered(function() {
     this.$('.deleteConfirmation').removeClass('hide');
     this.$('.skelelistDelete').addClass('hide');
 
+    this.cancelDeletion = function(instance) {
+        Meteor.clearTimeout(instance.progressInterval);
+        instance.$('.deleteConfirmation').addClass('hide');
+        instance.$('.skelelistDelete').removeClass('hide');
+
+        instance.data.actionContainerInstance.$('.skelelistActions').show(0);
+        Blaze.remove(instance.view);
+    };
+
     this.progressInterval = Meteor.setInterval(() => {
         // increase the timer bar
         barWidth++;
@@ -125,13 +134,8 @@ Template.skelelistActionDeleteTimerConfirm.onRendered(function() {
         // when the bar is full, remove the confirmation block from "action extras" wrapper,
         // hide it and show  action buttons block
         if (barWidth === 100) {
-            Meteor.clearInterval(this.progressInterval);
             this.restoreDeleteBtnTimeout = Meteor.setTimeout(() => {
-                this.$('.deleteConfirmation').addClass('hide');
-                this.$('.skelelistDelete').removeClass('hide');
-
-                this.data.actionContainerInstance.$('.skelelistActions').show(0);
-                Blaze.remove(this.view);
+                this.cancelDeletion(this);
             }, 500);
         }
     }, intervalTiming);
@@ -142,9 +146,12 @@ Template.skelelistActionDeleteTimerConfirm.events({
         let id = data.record._id;
 
         Meteor.setTimeout(function() {
-            Meteor.clearTimeout(instance.restoreDeleteBtnTimeout);
             Meteor.call('deleteDocument', id, data.schemaName);
         }, 600);
+    },
+    'click .cancelDeletion': function(event, instance) {
+        Meteor.clearTimeout(instance.restoreDeleteBtnTimeout);
+        instance.cancelDeletion(instance);
     }
 });
 

@@ -89,7 +89,7 @@
 <template name="skelelistActionDeleteTimerConfirm">
     <div class="deleteConfirmation">
         <div class="barLabel">
-            {{_ "undoDelete_lbl"}} {{secondsRemaining}}
+            {{_ "undoDelete_lbl"}} {{secondsRemaining}} <span class="cancelDeletion">{{_ "cancel_btn"}}</span>
         </div>
         <div class="switch">
             <label>
@@ -121,7 +121,7 @@
     <div id="skeletorUserChangePasswordModal" class="modal modal-fixed-footer">
         <div class="modal-content">
             <div class="vSpaced">
-                <h5>{{_ "changePasswordTitle_lbl"}}</h5><h6><b>{{item.username}}</b></h6>
+                <h5>{{_ "changePasswordTitle_lbl"}} <b>{{item.username}}</b></h5>
             </div>
 
             <div id="skeletorUserChangePasswordForm"></div>
