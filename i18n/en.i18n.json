@@ -1,7 +1,8 @@
 {
     "actions_lbl": "Actions",
+    "changePasswordTitle_lbl": "Change password for:",
+    "undoDelete_lbl": "Confirm in",
 
     "delete_btn": "Delete",
-    "changePassword_btn": "Change password",
-    "changePasswordTitle_lbl": "Change password for:"
+    "changePassword_btn": "Change password"
 }

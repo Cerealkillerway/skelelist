@@ -56,41 +56,57 @@ skelelistGeneralHelpers = {
 
             // if the value is a data source -> find the source attribute
             if (listViewOptions.sourcedFields && listViewOptions.sourcedFields[name] !== undefined) {
-                let source = fieldSchema.source;
                 let sourceOptions = listViewOptions.sourcedFields[name];
-                let sourceDocument = Skeletor.Data[sourceOptions.collection].findOne({_id: value});
+                let values;
+                let mappedValue = [];
 
-                if (sourceDocument) {
-                    let nameAttr = sourceDocument;
-                    let missingTranslation = false;
-
-                    sourceOptions.mapTo.split('.').forEach(function(nameShard, index) {
-                        if (nameShard.indexOf(':itemLang---') === 0) {
-                            let nameOnly = nameShard.substring(12, nameShard.length);
-
-                            if (nameAttr[lang + '---' + nameOnly]) {
-                                nameAttr = nameAttr[lang + '---' + nameOnly];
-                            }
-                            else {
-                                nameAttr = nameAttr[defaultLang + '---' + nameOnly];
-                                missingTranslation = true;
-                            }
-                        }
-                        else {
-                            nameAttr = nameAttr[nameShard];
-                        }
-                    });
-
-                    if (missingTranslation) {
-                        value = '#(' + nameAttr + ')';
-                    }
-                    else {
-                        value = nameAttr;
-                    }
+                // value can be an array since the field can contain multiple values (like a multiple select)
+                // to handle this properly, let's transform it into an array if it's a single value
+                if (!Match.test(value, [Match.Any])) {
+                    values = [value];
                 }
                 else {
-                    value = TAPi18n.__('none_lbl');
+                    values = value;
                 }
+
+                values.forEach(function(value) {
+                    let sourceDocument = Skeletor.Data[sourceOptions.collection].findOne({_id: value});
+
+                    if (sourceDocument) {
+                        let nameAttr = sourceDocument;
+                        let missingTranslation = false;
+
+                        sourceOptions.mapTo.split('.').forEach(function(nameShard, index) {
+                            if (nameShard.indexOf(':itemLang---') === 0) {
+                                let nameOnly = nameShard.substring(12, nameShard.length);
+
+                                if (nameAttr[lang + '---' + nameOnly]) {
+                                    nameAttr = nameAttr[lang + '---' + nameOnly];
+                                }
+                                else {
+                                    nameAttr = nameAttr[defaultLang + '---' + nameOnly];
+                                    missingTranslation = true;
+                                }
+                            }
+                            else {
+                                nameAttr = nameAttr[nameShard];
+                            }
+                        });
+
+                        if (missingTranslation) {
+                            value = '#(' + nameAttr + ')';
+                        }
+                        else {
+                            value = nameAttr;
+                        }
+                    }
+                    else {
+                        value = TAPi18n.__('none_lbl');
+                    }
+                    mappedValue.push(value);
+                });
+
+                value = mappedValue.join(', ');
             }
 
             // check if the field should be a link to detail page
@@ -226,6 +242,16 @@ Template.skelelistTable.helpers({
 });
 
 
+// actions
+// delete confirmation block
+Template.skelelistActionDeleteTimerConfirm.helpers({
+    secondsRemaining: function() {
+        return Template.instance().confirmationCounter.get();
+    }
+});
+
+
+// change password
 Template.skelelistActionChangePasswordModal.helpers({
     currentRecord: function() {
         if (Template.instance().data.changePasswordModalFormView) {

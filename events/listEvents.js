@@ -40,6 +40,7 @@ Template.skelelistActions.onRendered(function() {
 
         _.extend(actionData, data);
         actionData.actionOptions = actions[index];
+        actionData.actionContainerInstance = this;
 
         if (templateToRender !== undefined) {
             Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
@@ -56,10 +57,97 @@ Template.skelelistActionDelete.events({
     'click .skelelistDelete': function(event, instance) {
         let data = instance.data;
         let id = data.record._id;
+        let options = data.actionOptions;
 
-        Meteor.call('deleteDocument', id, data.schemaName);
+        if (options.confirm) {
+            let confirmOptions = options.confirm;
+            let $extrasContainer = data.actionContainerInstance.$('.skelelistActionExtras');
+            let confirmTemplateName = confirmOptions.template || 'skelelistActionDeleteTimerConfirm';
+            let confirmTemplate = Template[confirmTemplateName];
+
+            // render delete confirmation block in the "action extras" wrapper in parent template (skelelistActions)
+            if (confirmTemplate) {
+                Blaze.renderWithData(confirmTemplate, data, $extrasContainer[0]);
+            }
+            else {
+                skeleUtils.globalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError');
+            }
+            // hide action buttons block
+            data.actionContainerInstance.$('.skelelistActions').hide(0);
+            // show action extras block
+            $extrasContainer.show(0);
+
+            return false;
+        }
+        else {
+            Meteor.call('deleteDocument', id, data.schemaName);
+        }
     }
 });
+
+// delete confirmation block
+Template.skelelistActionDeleteTimerConfirm.onCreated(function() {
+    let confirmOptions = this.data.actionOptions.confirm;
+    let timeoutSeconds = (confirmOptions.timeout) / 1000 || 3;
+
+    this.confirmationCounter = new ReactiveVar(timeoutSeconds);
+});
+Template.skelelistActionDeleteTimerConfirm.onRendered(function() {
+    let barWidth = 0;
+    let $timerBar = this.$('.determinate');
+    let confirmOptions = this.data.actionOptions.confirm;
+    let timeout = confirmOptions.timeout || 3000;
+    let timeoutSeconds = timeout / 1000;
+    let intervalTiming = timeout / 100;
+    let step = Math.floor(100 / timeoutSeconds);
+    let steps = [];
+    let tmp = step;
+
+    while (tmp <= 100) {
+        steps.push(tmp);
+        tmp = tmp + step;
+    }
+
+    $timerBar.css({width: '0'});
+    this.$('.deleteConfirmation').removeClass('hide');
+    this.$('.skelelistDelete').addClass('hide');
+
+    this.progressInterval = Meteor.setInterval(() => {
+        // increase the timer bar
+        barWidth++;
+        $timerBar.css({width: barWidth + '%'});
+
+        // update seconds countdown
+        if (steps.indexOf(barWidth) >= 0) {
+            this.confirmationCounter.set(this.confirmationCounter.get() - 1);
+        }
+
+        // when the bar is full, remove the confirmation block from "action extras" wrapper,
+        // hide it and show  action buttons block
+        if (barWidth === 100) {
+            Meteor.clearInterval(this.progressInterval);
+            this.restoreDeleteBtnTimeout = Meteor.setTimeout(() => {
+                this.$('.deleteConfirmation').addClass('hide');
+                this.$('.skelelistDelete').removeClass('hide');
+
+                this.data.actionContainerInstance.$('.skelelistActions').show(0);
+                Blaze.remove(this.view);
+            }, 500);
+        }
+    }, intervalTiming);
+});
+Template.skelelistActionDeleteTimerConfirm.events({
+    'click .deleteActionSwitch': function(event, instance) {
+        let data = instance.data;
+        let id = data.record._id;
+
+        Meteor.setTimeout(function() {
+            Meteor.clearTimeout(instance.restoreDeleteBtnTimeout);
+            Meteor.call('deleteDocument', id, data.schemaName);
+        }, 600);
+    }
+});
+
 
 // change password
 Template.skelelistActionChangePassword.events({

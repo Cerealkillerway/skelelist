@@ -15,6 +15,7 @@ Package.onUse(function(api) {
     api.addFiles('namespace.js');
 
     // packages
+    api.use('check');
     api.use('jquery', 'client');
     api.use('underscore@1.0.0');
     api.use('fourseven:scss@3.2.0', 'client');

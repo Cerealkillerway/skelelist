@@ -2,6 +2,9 @@
 @import "{}/client/styles/panelColors";
 
 
+table.skelelistTable {
+    table-layout: fixed;
+}
 
 .skelelistLangs {
     display: inline-block;
@@ -30,6 +33,22 @@
     .btn {
         &:not(:last-child) {
             margin-right: 5px;
+        }
+    }
+}
+
+.skelelistActionExtras {
+    .deleteConfirmation {
+        position: relative;
+
+        .barLabel {
+            font-size: 11px;
+            position: absolute;
+            top: -20px;
+        }
+
+        .switch {
+            margin-top: 10px;
         }
     }
 }
