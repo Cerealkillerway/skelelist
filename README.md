@@ -15,7 +15,9 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 - **__listView**: *[object] (optional)* skelelist options
 - - **style**: *[string] (mandatory)*type of list to create; default "table";
 - - **classes**: *[string] (optional)* CSS classes to assign to the listView;
-- - **itemFields**: *[array of strings] (mandatory)* list of fields to use in the listView;
+- - **itemFields**: *[array of objects] (mandatory)* dictionary of fields to use in the listView; each object can have the following properties:
+- - - **name**: *[string] (mandatory)* the name of the field; must match the name defined on the field's object in the *fields* array of the schema;
+- - - **link**: *[boolean] (optional)* defines if the field should be show as a link to the form view of the current record;
 - - **itemActions**: *[array of objects] (mandatory)* dictionary of actions to use for each document in the list; (built in actions: "delete", "changePassword"); please see below for detail infos about every action object;
 - - **detailLink**: *[object] (mandatory)* definition of the link for detail view
 - - - **basePath**: *[string] (mandatory)* the path definition for the link
@@ -48,7 +50,9 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 
 - **__listView**: *[object] (optional)* options for the field in the list view:
 - - **stripHTML**: *[boolean] (optional)* set to true to strip out HTML from the value (default false);
-- - **truncate**: *[integer] (optional)* number of characters to keep (default all);
+- - **truncate**: *[object] (optional)* dictionary of options for truncation:
+- - - **max**: *[integer] (optional)* number of characters to keep (default all);
+- - - **suffix**: *[string] (optional)* suffix to append to the string when truncation happens (default *[...]*);
 
 
 

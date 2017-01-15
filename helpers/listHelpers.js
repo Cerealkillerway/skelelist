@@ -10,8 +10,9 @@ Template.registerHelper('isPaginated', function(schemaName) {
 
 
 skelelistGeneralHelpers = {
-    label: function(name, options) {
-        name = name.substring(name.lastIndexOf('.') + 1, name.length);
+    label: function(listField, options) {
+        let name = listField.name;
+        name = listField.name.substring(name.lastIndexOf('.') + 1, name.length);
 
         switch(options) {
 
@@ -19,11 +20,15 @@ skelelistGeneralHelpers = {
             return TAPi18n.__(name + '_lbl');
         }
     },
-    field: function(name, data, schema, listTemplateinstance) {
+    field: function(listField, data, schema, listTemplateinstance) {
         if (listTemplateinstance.skeleSubsReady.get()) {
+            let name = listField.name;
             let fieldSchema = $.grep(schema.fields, function(field){
                     return field.name == name;
                 });
+
+            fieldSchema = fieldSchema[0];
+
             let lang = FlowRouter.getParam('itemLang');
             let defaultLang = Skeletor.configuration.lang.default;
             let UIlang = FlowRouter.getQueryParam('lang');
@@ -35,8 +40,7 @@ skelelistGeneralHelpers = {
             let pathShards = name.split('.');
             let fieldMissingTranslation = false;
 
-
-            if (fieldSchema[0].i18n === undefined) {
+            if (fieldSchema.i18n === undefined) {
                 if (data[lang + '---' + name]) {
                     value = data[lang + '---' + name];
                 }
@@ -110,7 +114,7 @@ skelelistGeneralHelpers = {
             }
 
             // check if the field should be a link to detail page
-            if (link.params.indexOf(name) >= 0) {
+            if (listField.link) {
                 let params = {};
                 let segmentLang = FlowRouter.getParam('itemLang');
 
@@ -121,7 +125,7 @@ skelelistGeneralHelpers = {
                         break;
 
                         default:
-                        if (fieldSchema[0].i18n === undefined) {
+                        if (fieldSchema.i18n === undefined) {
                             if (data[lang + '---' + param]) {
                                 params[param] = data[lang + '---' + param];
                             }
@@ -145,7 +149,11 @@ skelelistGeneralHelpers = {
                     value = value.replace(/<(?:.|\n)*?>/gm, '');
                 }
                 if (listOptions.truncate) {
-                    value = value.substr(0, listOptions.truncate);
+                    if (value.length > listOptions.truncate.max) {
+                        let truncateSuffix = listOptions.truncate.suffix || '[...]';
+
+                        value = value.substr(0, listOptions.truncate.max) + truncateSuffix;
+                    }
                 }
             }
 
