@@ -25,10 +25,21 @@ Template.skelelist.events({
 // skelelist actions container
 Template.skelelistActions.onRendered(function() {
     let data = this.data;
+    let record = data.record;
     let actions = data.schema.__listView.itemActions;
     let actionNames = _.map(actions, function(action){
         return action.name;
     });
+
+    // check if current record has the "options" field and handle it
+    if (record.skelelistOptions && record.skelelistOptions.actions) {
+        actionNames = actionNames.filter(function(action) {
+            if (record.skelelistOptions.actions[action] === false) {
+                return false;
+            }
+            return true;
+        });
+    }
 
     // render all needed actions
     actionNames.forEach((action, index) => {

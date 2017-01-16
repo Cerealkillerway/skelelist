@@ -12,19 +12,35 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 
 ### SCHEMA OPTIONS
 
-- **__listView**: *[object] (optional)* skelelist options
-- - **style**: *[string] (mandatory)*type of list to create; default "table";
-- - **classes**: *[string] (optional)* CSS classes to assign to the listView;
-- - **itemFields**: *[array of objects] (mandatory)* dictionary of fields to use in the listView; each object can have the following properties:
-- - - **name**: *[string] (mandatory)* the name of the field; must match the name defined on the field's object in the *fields* array of the schema;
-- - - **link**: *[boolean] (optional)* defines if the field should be show as a link to the form view of the current record;
-- - **itemActions**: *[array of objects] (mandatory)* dictionary of actions to use for each document in the list; (built in actions: "delete", "changePassword"); please see below for detail infos about every action object;
-- - **detailLink**: *[object] (mandatory)* definition of the link for detail view
-- - - **basePath**: *[string] (mandatory)* the path definition for the link
-- - - **params**: *[array of strings] (optional)* list of the params used in the previous *basePath*;
-- - **sourceFields**: *[object] (optional)* dictionary of fields used in *itemFields* that are external links to other documents; each element is an [object] with the field's name as key and these properties:
-- - - **mapTo**: *[string] (mandatory)* name of the attribute in the external document to use;
-- - - **collection**: *[string] (mandatory)* name of the collection where to find the external document;
+**__listView**: *[object] (optional)* skelelist options; (not needed if skelelist is not used for this chema);
+
+- **style**: *[string] (mandatory)*type of list to create; default "table";
+- **classes**: *[string] (optional)* CSS classes to assign to the listView;
+- **itemFields**: *[array of objects] (mandatory)* dictionary of fields to use in the listView; each object can have the following properties:
+- - **name**: *[string] (mandatory)* the name of the field; must match the name defined on the field's object in the *fields* array of the schema;
+- - **link**: *[boolean] (optional)* defines if the field should be show as a link to the form view of the current record;
+- **itemActions**: *[array of objects] (mandatory)* dictionary of actions to use for each document in the list; (built in actions: "delete", "changePassword"); please see below for detail infos about every action object;
+- **detailLink**: *[object] (mandatory)* definition of the link for detail view
+- - **basePath**: *[string] (mandatory)* the path definition for the link
+- - **params**: *[array of strings] (optional)* list of the params used in the previous *basePath*;
+- **sourceFields**: *[object] (optional)* dictionary of fields used in *itemFields* that are external links to other documents; each element is an [object] with the field's name as key and these properties:
+- - **mapTo**: *[string] (mandatory)* name of the attribute in the external document to use;
+- - **collection**: *[string] (mandatory)* name of the collection where to find the external document;
+- **callbacks**: *[object] (optional)* dictionary of callbacks to perform on every record while rendering *Skelelist*
+- - **beforeRendering(currentRecord)**: *[function] (optional)* a function called on every record rendered by *Skelelist*; can edit the record itself before returning it; in particular it can append to the record the *"skelelistOptions"* object that is evaluated by *Skelelist* to perform special tasks (see below);
+
+
+#### SKELELIST OPTIONS
+
+The *"skelelistOptions"* object can be appended by a skelelist callback to the current record before it is rendered; this are its available properties to set:
+
+**skelelistOptions**: *[object] (optional)* dictionary of options evaluated by *Skelelist* before rendering the current record;
+- **actions**: *[object] (optional)* dictionary of actions to disable; to disable an action defined on the *itemActions* array, set it to *false* on this object; ex. to disable the *"delete"* button on the current record:
+
+
+    actions: {
+        delete: false
+    }
 
 
 ### ITEM ACTIONS

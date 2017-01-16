@@ -28,23 +28,25 @@
         </thead>
         <tbody>
             {{#each paginate this}}
-                <tr data-id="{{this._id}}">
-                    {{#each ../schema.__listView.itemFields}}
-                        {{#with field this .. ../../schema ../..}}
-                            <td>
-                                {{#if this.link}}
-                                    <a class="skelelistLink" href="{{this.link}}">
+                {{#with listRecord this ../schema.__listView}}
+                    <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
+                        {{#each ../../schema.__listView.itemFields}}
+                            {{#with field this ../.. ../../../schema ../../..}}
+                                <td>
+                                    {{#if this.link}}
+                                        <a class="skelelistLink" href="{{this.link}}">
+                                            {{this.value}}
+                                        </a>
+                                    {{else}}
                                         {{this.value}}
-                                    </a>
-                                {{else}}
-                                    {{this.value}}
-                                {{/if}}
-                            </td>
-                        {{/with}}
-                    {{/each}}
+                                    {{/if}}
+                                </td>
+                            {{/with}}
+                        {{/each}}
 
-                    {{> skelelistActions (actionsData this)}}
-                </tr>
+                        {{> skelelistActions (actionsData this)}}
+                    </tr>
+                {{/with}}
             {{/each}}
         </tbody>
     </table>

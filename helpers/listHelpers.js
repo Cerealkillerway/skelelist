@@ -20,15 +20,41 @@ skelelistGeneralHelpers = {
             return TAPi18n.__(name + '_lbl');
         }
     },
+    listRecord: function(listRecord, listSchema) {
+        // if necessary fire "beforeRendering" callback (defined on the current schema)
+        if (listSchema.callbacks && listSchema.callbacks.beforeRendering) {
+            listRecord = listSchema.callbacks.beforeRendering(listRecord);
+        }
+
+        return listRecord;
+    },
     field: function(listField, data, schema, listTemplateinstance) {
+        // recursive function to deeply traverse schema fields and group of fields
+        // and get the current field' schema
+        function fieldSchemaLookup(fields, name) {
+            let schemaFound;
+
+            _.find(fields, function(field) {
+                //console.log(field);
+                if (field.skeleformGroup) {
+                    let schema = fieldSchemaLookup(field.fields, name);
+
+                    if (schema) {
+                        schemaFound = schema;
+                        return schema;
+                    }
+                }
+
+                schemaFound = field;
+                return field.name === name;
+            });
+
+            return schemaFound;
+        }
+
         if (listTemplateinstance.skeleSubsReady.get()) {
             let name = listField.name;
-            let fieldSchema = $.grep(schema.fields, function(field){
-                    return field.name == name;
-                });
-
-            fieldSchema = fieldSchema[0];
-
+            let fieldSchema = fieldSchemaLookup(schema.fields, name);
             let lang = FlowRouter.getParam('itemLang');
             let defaultLang = Skeletor.configuration.lang.default;
             let UIlang = FlowRouter.getQueryParam('lang');
@@ -167,9 +193,11 @@ skelelistGeneralHelpers = {
         }
     },
     paginate: function(data) {
-        let options = data.schema.__listView.options;
-        let sort = data.schema.__listView.sort;
-        let collection = data.schema.__collection;
+        let schema = data.schema;
+        let listSchema = schema.__listView;
+        let options = listSchema.options;
+        let sort = listSchema.sort;
+        let collection = schema.__collection;
         let findOptions = {};
         let list;
 
@@ -178,12 +206,12 @@ skelelistGeneralHelpers = {
             findOptions.sort = {};
 
             _.keys(sort).forEach(function(sortOption, index) {
-                let fieldSchema = $.grep(data.schema.fields, function(field){
+                let fieldSchema = $.grep(schema.fields, function(field){
                     return field.name == sortOption;
                 });
 
                 if (fieldSchema[0].i18n === undefined) {
-                    findOptions.sort[FlowRouter.getParam('itemLang') + '.' + sortOption] = sort[sortOption];
+                    findOptions.sort[FlowRouter.getParam('itemLang') + '---' + sortOption] = sort[sortOption];
                 }
                 else {
                     findOptions.sort[sortOption] = sort[sortOption];
