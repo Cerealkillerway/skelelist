@@ -9,7 +9,7 @@ Template.registerHelper('isPaginated', function(schemaName) {
 
 
 
-Skelelist.skelelistGeneralHelpers = {
+Skeleltor.skelelist.skelelistGeneralHelpers = {
     label: function(listField, options) {
         let name = listField.name;
         name = listField.name.substring(name.lastIndexOf('.') + 1, name.length);
@@ -261,7 +261,7 @@ Template.skelelist.helpers({
 
 
 // list table view
-Template.skelelistTable.helpers(Skelelist.skelelistGeneralHelpers);
+Template.skelelistTable.helpers(Skeleltor.skelelist.skelelistGeneralHelpers);
 Template.skelelistTable.helpers({
     actionsData: function(record) {
         const instance = Template.instance();
