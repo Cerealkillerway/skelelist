@@ -9,8 +9,10 @@
 
 <!-- table list style -->
 <template name="skelelistTable">
-    {{#if isTranslatable}}
-        {{> skelelistLangBar}}
+    {{#if (skeleCheckPermissions "allowConfig")}}
+        {{#if isTranslatable}}
+            {{> skelelistLangBar}}
+        {{/if}}
     {{/if}}
 
     <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">
@@ -59,7 +61,7 @@
 
 <!-- skelelist view link block helper -->
 <template name="skelelistLink">
-    <a href="/panel/pages{{currentLangLink}}">
+    <a href="/panel/pages{{skeleCurrentLangLink}}">
         <i class="material-icons small left">find_in_page</i>
         <div class="navItemName">{{_ "menu_pages"}}</div>
     </a>
