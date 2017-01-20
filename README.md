@@ -69,6 +69,7 @@ The *"skelelistOptions"* object can be appended by a skelelist callback to the c
 - - **truncate**: *[object] (optional)* dictionary of options for truncation:
 - - - **max**: *[integer] (optional)* number of characters to keep (default all);
 - - - **suffix**: *[string] (optional)* suffix to append to the string when truncation happens (default *[...]*);
+- - **transform(value, document)**: *[function] (optional)* a callback invoked on the field that receives the current field's value and the current document as parameters; it is supposed to perform necessary display transformation and must return the value to be displayed;
 
 
 
