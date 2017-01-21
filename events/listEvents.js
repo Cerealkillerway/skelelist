@@ -2,7 +2,7 @@
 Template.skelelist.onRendered(function() {
     let options = this.data.schema.__listView.options;
 
-    skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+    SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 
     if (options && options.pagination) {
         if (!FlowRouter.getQueryParam('page')) {
@@ -57,7 +57,7 @@ Template.skelelistActions.onRendered(function() {
             Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
         }
         else {
-            skeleUtils.globalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError', false, true);
+            SkeleUtils.GlobalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError', false, true);
         }
     });
 });
@@ -81,7 +81,7 @@ Template.skelelistActionDelete.events({
                 Blaze.renderWithData(confirmTemplate, data, $extrasContainer[0]);
             }
             else {
-                skeleUtils.globalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError', false, true);
+                SkeleUtils.GlobalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError', false, true);
             }
             // hide action buttons block
             data.actionContainerInstance.$('.skelelistActions').hide(0);
@@ -276,7 +276,7 @@ Template.skelelistPagination.events({
             instance.$('.prevPage').removeClass('disabled');
         }
 
-        skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
     'click .nextPage': function(event, instance) {
         let currentPage = parseInt(FlowRouter.getQueryParam('page'));
@@ -291,7 +291,7 @@ Template.skelelistPagination.events({
             $(event.target).closest('li').addClass('disabled');
         }
 
-        skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     },
     'click .prevPage': function(event, instance) {
         let currentPage = parseInt(FlowRouter.getQueryParam('page'));
@@ -305,7 +305,7 @@ Template.skelelistPagination.events({
             $(event.target).closest('li').addClass('disabled');
         }
 
-        skeleUtils.globalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
     }
 });
 
