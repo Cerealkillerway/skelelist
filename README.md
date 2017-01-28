@@ -34,8 +34,9 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 
 The *"skelelistOptions"* object can be appended by a skelelist callback to the current record before it is rendered; this are its available properties to set:
 
-**skelelistOptions**: *[object] (optional)* dictionary of options evaluated by *Skelelist* before rendering the current record;
-- **actions**: *[object] (optional)* dictionary of actions to disable; to disable an action defined on the *itemActions* array, set it to *false* on this object; ex. to disable the *"delete"* button on the current record:
+- **skelelistOptions**: *[object] (optional)* dictionary of options evaluated by *Skelelist* before rendering the current record;
+- - **class**: *[string] (optional)* class to append to the current record's row;
+- - **actions**: *[object] (optional)* dictionary of actions to disable; to disable an action defined on the *itemActions* array, set it to *false* on this object; ex. to disable the *"delete"* button on the current record:
 
 
     actions: {
