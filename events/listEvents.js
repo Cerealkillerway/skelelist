@@ -4,6 +4,7 @@ Template.skelelist.onRendered(function() {
 
     SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 
+    // set page query param
     if (options && options.pagination) {
         if (!FlowRouter.getQueryParam('page')) {
             FlowRouter.setQueryParams({page: 1});
