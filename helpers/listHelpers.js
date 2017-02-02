@@ -1,5 +1,11 @@
 Template.registerHelper('isPaginated', function(schemaName) {
-    let options = Skeletor.Schemas[schemaName].__listView.options;
+    let listViewObject = Skeletor.Schemas[schemaName].__listView;
+
+    if (!listViewObject) {
+        return '';
+    }
+
+    let options = listViewObject.options;
 
     if (options && options.pagination) {
         return '&page=1';
