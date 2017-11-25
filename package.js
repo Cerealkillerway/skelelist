@@ -1,6 +1,6 @@
 Package.describe({
     name: 'cerealkiller:skelelist',
-    version: '1.35.2',
+    version: '1.40.0',
     summary: 'collection views',
     // URL to the Git repository containing the source code for this package.
     git: '',
@@ -15,7 +15,7 @@ Package.onUse(function(api) {
     api.use([
         'jquery',
         'underscore@1.0.0',
-        'fourseven:scss@3.2.0',
+        'fourseven:scss',
         'blaze-html-templates'
     ],
     ['client']);
