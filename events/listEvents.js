@@ -70,6 +70,7 @@ Template.skelelistActionDelete.events({
         let data = instance.data;
         let id = data.record._id;
         let options = data.actionOptions;
+        let deleteMethod = data.schema.__listView.deleteMethod || Skeletor.configuration.defaultMethods.delete;
 
         if (options.confirm) {
             let confirmOptions = options.confirm;
@@ -92,7 +93,7 @@ Template.skelelistActionDelete.events({
             return false;
         }
         else {
-            Meteor.call('deleteDocument', id, data.schemaName);
+            Meteor.call(deleteMethod, id, data.schemaName);
         }
     }
 });
@@ -156,9 +157,10 @@ Template.skelelistActionDeleteTimerConfirm.events({
     'click .deleteActionSwitch': function(event, instance) {
         let data = instance.data;
         let id = data.record._id;
+        let deleteMethod = data.schema.__listView.deleteMethod || Skeletor.configuration.defaultMethods.delete;
 
         Meteor.setTimeout(function() {
-            Meteor.call('deleteDocument', id, data.schemaName);
+            Meteor.call(deleteMethod, id, data.schemaName);
         }, 600);
     },
     'click .cancelDeletion': function(event, instance) {
