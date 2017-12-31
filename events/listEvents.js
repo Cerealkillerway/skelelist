@@ -28,14 +28,12 @@ Template.skelelistActions.onRendered(function() {
     let data = this.data;
     let record = data.record;
     let actions = data.schema.__listView.itemActions;
-    let actionNames = _.map(actions, function(action){
-        return action.name;
-    });
+    let collection = data.schema.__collection;
 
     // check if current record has the "options" field and handle it
     if (record.skelelistOptions && record.skelelistOptions.actions) {
-        actionNames = actionNames.filter(function(action) {
-            if (record.skelelistOptions.actions[action] === false) {
+        actions = actions.filter(function(action) {
+            if (record.skelelistOptions.actions[action.name] === false) {
                 return false;
             }
             return true;
@@ -43,16 +41,24 @@ Template.skelelistActions.onRendered(function() {
     }
 
     // render all needed actions
-    actionNames.forEach((action, index) => {
-        let templateName = 'skelelistAction' + action.capitalize();
+    actions.forEach((action, index) => {
+        let templateName = 'skelelistAction' + action.name.capitalize();
         let templateToRender = Template[templateName];
 
         // add the action options to the data context for the action template
         let actionData = {};
 
         _.extend(actionData, data);
-        actionData.actionOptions = actions[index];
+        actionData.actionOptions = action;
         actionData.actionContainerInstance = this;
+
+        // handle action's permission option
+        if (actionData.actionOptions.permission) {
+            if (!SkeleUtils.GlobalUtilities.checkPermissions(actionData.actionOptions.permission)) {
+                SkeleUtils.GlobalUtilities.logger('No permissions for action ' + action.name, 'skelelist');
+                return false;
+            }
+        }
 
         if (templateToRender !== undefined) {
             Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
@@ -93,7 +99,18 @@ Template.skelelistActionDelete.events({
             return false;
         }
         else {
-            Meteor.call(deleteMethod, id, data.schemaName);
+            Meteor.call(deleteMethod, id, data.schemaName, function(result) {
+                if (result !== true) {
+                    if (result.error === 'unauthorized') {
+                        Materialize.toast(TAPi18n.__('permissions_error'), 5000, 'permissionsError');
+                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                    }
+                    else {
+                        Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                    }
+                }
+            });
         }
     }
 });
@@ -160,7 +177,18 @@ Template.skelelistActionDeleteTimerConfirm.events({
         let deleteMethod = data.schema.__methods.delete || Skeletor.configuration.defaultMethods.delete;
 
         Meteor.setTimeout(function() {
-            Meteor.call(deleteMethod, id, data.schemaName);
+            Meteor.call(deleteMethod, id, data.schemaName, function(result) {
+                if (result !== true) {
+                    if (result.error === 'unauthorized') {
+                        Materialize.toast(TAPi18n.__('permissions_error'), 5000, 'permissionsError');
+                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                    }
+                    else {
+                        Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                    }
+                }
+            });
         }, 600);
     },
     'click .cancelDeletion': function(event, instance) {
@@ -230,7 +258,14 @@ Template.userChangePasswordToolbar.events({
         if (Skeleform.utils.skeleformValidateForm(gatheredData, Fields)) {
             Meteor.call('updateUserPassword', formContext.item._id, $('#newPassword').val(), function(error, result) {
                 if (error) {
-                    Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                    if (error.error === 'unauthorized') {
+                        Materialize.toast(TAPi18n.__('permissions_error'), 5000, 'permissionsError');
+                        SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
+                    }
+                    else {
+                        Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                        SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
+                    }
                 }
                 else {
                     Materialize.toast(TAPi18n.__('passwordCanged_msg', formContext.item.username), 5000, 'success');

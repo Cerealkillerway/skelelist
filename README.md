@@ -51,6 +51,7 @@ The *"skelelistOptions"* object can be appended by a skelelist callback to the c
 #### Generic options (available for all actions)
 
 - **name**: *[string] (required)* the name of the action to render; Skelelist will try to render the component named: *"skelelistAction" + name.capitalize()*;
+- **permission**: *[string/array of strings] (optional)* needed permissions to see the action button (this have effect only on button's visibility, if the action itself requires any kind of validation, the user will need to have the necessary permissions);
 
 #### Action specific options:
 
