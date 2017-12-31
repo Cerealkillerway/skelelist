@@ -70,7 +70,7 @@ Template.skelelistActionDelete.events({
         let data = instance.data;
         let id = data.record._id;
         let options = data.actionOptions;
-        let deleteMethod = data.schema.__listView.deleteMethod || Skeletor.configuration.defaultMethods.delete;
+        let deleteMethod = data.schema.__methods.delete || Skeletor.configuration.defaultMethods.delete;
 
         if (options.confirm) {
             let confirmOptions = options.confirm;
@@ -157,7 +157,7 @@ Template.skelelistActionDeleteTimerConfirm.events({
     'click .deleteActionSwitch': function(event, instance) {
         let data = instance.data;
         let id = data.record._id;
-        let deleteMethod = data.schema.__listView.deleteMethod || Skeletor.configuration.defaultMethods.delete;
+        let deleteMethod = data.schema.__methods.delete || Skeletor.configuration.defaultMethods.delete;
 
         Meteor.setTimeout(function() {
             Meteor.call(deleteMethod, id, data.schemaName);
