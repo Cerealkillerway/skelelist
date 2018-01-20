@@ -1,9 +1,11 @@
 <!-- main skelelist template -->
 <template name="skelelist">
     <div class="skelelist">
-        {{> gearLoading}}
-
-        {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
+        {{#if isDataReady this}}
+            {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
+        {{else}}
+            {{> gearContent this.schema}}
+        {{/if}}
     </div>
 </template>
 
