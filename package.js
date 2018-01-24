@@ -38,7 +38,9 @@ Package.onUse(function(api) {
     // libraries
     api.addFiles([
         'helpers/listHelpers.js',
-        'events/listEvents.js'
+        
+        'events/listEvents.js',
+        'events/changePasswordEvents.js'
     ],
     ['client']);
 
