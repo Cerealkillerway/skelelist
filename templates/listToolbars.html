@@ -1,6 +1,7 @@
 <!-- list lang bar -->
 <template name="skelelistLangBar">
-    <div class="skelelistLangs right">
+    {{_ "contentsLang_lbl"}}
+    <div class="skelelistLangs">
         {{#each langs}}
             <div class="langFlag {{isActiveLang this}}" data-lang="{{this}}">
                 <img src="/images/icons/lang/{{this}}.jpg">
