@@ -1,0 +1,10 @@
+<!-- skelelist actions container -->
+<template name="skelelistActions">
+    <!-- if actions are defined on schema, include the actions template -->
+    {{#if this.schema.__listView.itemActions}}
+        <td>
+            <div class="skelelistActions"></div>
+            <div class="skelelistActionExtras"></div>
+        </td>
+    {{/if}}
+</template>

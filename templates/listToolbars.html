@@ -1,0 +1,34 @@
+<!-- list lang bar -->
+<template name="skelelistLangBar">
+    <div class="skelelistLangs right">
+        {{#each langs}}
+            <div class="langFlag {{isActiveLang this}}" data-lang="{{this}}">
+                <img src="/images/icons/lang/{{this}}.jpg">
+            </div>
+        {{/each}}
+    </div>
+</template>
+
+
+<!-- pagination -->
+<template name="skelelistPagination">
+    <ul class="pagination">
+        <li class="waves-effect waves-light pointer prevPage">
+            <a>
+                <i class="material-icons">chevron_left</i>
+            </a>
+        </li>
+
+        {{#each pages this}}
+            <li data-number="{{this}}" class="waves-effect waves-light skelelistPageBtn pointer {{isCurrentPage this}}">
+                <div>{{this}}</div>
+            </li>
+        {{/each}}
+
+        <li class="waves-effect waves-light pointer nextPage">
+            <a>
+                <i class="material-icons">chevron_right</i>
+            </a>
+        </li>
+    </ul>
+</template>

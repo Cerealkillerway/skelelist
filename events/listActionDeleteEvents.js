@@ -1,75 +1,3 @@
-// skelelist
-Template.skelelist.onRendered(function() {
-    let options = this.data.schema.__listView.options;
-
-    SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
-
-    // set page query param
-    if (options && options.pagination) {
-        if (!FlowRouter.getQueryParam('page')) {
-            FlowRouter.setQueryParams({page: 1});
-        }
-    }
-});
-Template.skelelist.events({
-    'click .skelelistLink': function(event, instance) {
-        let documentId = $(event.target).closest('tr').data('id');
-
-        // set document id in order to let skeletor find it in case
-        // it is not yet translated for current lang
-        Session.set('currentItem', documentId);
-    }
-});
-
-
-
-// skelelist actions container
-Template.skelelistActions.onRendered(function() {
-    let data = this.data;
-    let record = data.record;
-    let actions = data.schema.__listView.itemActions;
-    let collection = data.schema.__collection;
-
-    // check if current record has the "options" field and handle it
-    if (record.skelelistOptions && record.skelelistOptions.actions) {
-        actions = actions.filter(function(action) {
-            if (record.skelelistOptions.actions[action.name] === false) {
-                return false;
-            }
-            return true;
-        });
-    }
-
-    // render all needed actions
-    actions.forEach((action, index) => {
-        let templateName = 'skelelistAction' + action.name.capitalize();
-        let templateToRender = Template[templateName];
-
-        // add the action options to the data context for the action template
-        let actionData = {};
-
-        _.extend(actionData, data);
-        actionData.actionOptions = action;
-        actionData.actionContainerInstance = this;
-
-        // handle action's permission option
-        if (actionData.actionOptions.permission) {
-            if (!SkeleUtils.GlobalUtilities.checkPermissions(actionData.actionOptions.permission)) {
-                SkeleUtils.GlobalUtilities.logger('No permissions for action ' + action.name, 'skelelist');
-                return false;
-            }
-        }
-
-        if (templateToRender !== undefined) {
-            Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
-        }
-        else {
-            SkeleUtils.GlobalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError', false, true);
-        }
-    });
-});
-
-// skelelist actions
 // delete
 Template.skelelistActionDelete.events({
     'click .skelelistDelete': function(event, instance) {
@@ -129,6 +57,8 @@ Template.skelelistActionDeleteTimerConfirm.onCreated(function() {
 
     this.confirmationCounter = new ReactiveVar(timeoutSeconds);
 });
+
+
 Template.skelelistActionDeleteTimerConfirm.onRendered(function() {
     let barWidth = 0;
     let $timerBar = this.$('.determinate');
@@ -177,6 +107,8 @@ Template.skelelistActionDeleteTimerConfirm.onRendered(function() {
         }
     }, intervalTiming);
 });
+
+
 Template.skelelistActionDeleteTimerConfirm.events({
     'click .deleteActionSwitch': function(event, instance) {
         let data = instance.data;
@@ -208,85 +140,5 @@ Template.skelelistActionDeleteTimerConfirm.events({
     'click .cancelDeletion': function(event, instance) {
         Meteor.clearTimeout(instance.restoreDeleteBtnTimeout);
         instance.cancelDeletion(instance);
-    }
-});
-
-
-// skelelist pagination
-Template.skelelistPagination.onRendered(function() {
-    let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-    let lastPage = this.lastPage;
-
-    if (currentPage === lastPage) {
-        this.$('.nextPage').addClass('disabled');
-    }
-
-    if (currentPage === 1) {
-        this.$('.prevPage').addClass('disabled');
-    }
-});
-
-
-Template.skelelistPagination.events({
-    'click .skelelistPageBtn': function(event, instance) {
-        let number = $(event.target).closest('li').data('number');
-
-        FlowRouter.setQueryParams({page: number});
-
-        // manage enabling disabling next button
-        if (number === instance.lastPage) {
-            instance.$('.nextPage').addClass('disabled');
-        }
-        else {
-            instance.$('.nextPage').removeClass('disabled');
-        }
-
-        // manage enabling disabling prev button
-        if (number === 1) {
-            instance.$('.prevPage').addClass('disabled');
-        }
-        else {
-            instance.$('.prevPage').removeClass('disabled');
-        }
-
-        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
-    },
-    'click .nextPage': function(event, instance) {
-        let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-        let lastPage = instance.lastPage;
-
-        if (currentPage < lastPage) {
-            FlowRouter.setQueryParams({page: currentPage + 1});
-        }
-
-        instance.$('.prevPage').removeClass('disabled');
-        if ((currentPage + 1) === lastPage) {
-            $(event.target).closest('li').addClass('disabled');
-        }
-
-        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
-    },
-    'click .prevPage': function(event, instance) {
-        let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-
-        if (currentPage > 1) {
-            FlowRouter.setQueryParams({page: currentPage - 1});
-        }
-
-        instance.$('.nextPage').removeClass('disabled');
-        if ((currentPage - 1) === 1) {
-            $(event.target).closest('li').addClass('disabled');
-        }
-
-        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
-    }
-});
-
-
-Template.skelelistLangBar.events({
-    'click .langFlag': function(event, instance) {
-        let newLang = $(event.target).closest('.langFlag').data('lang');
-
-        FlowRouter.setParams({'itemLang': newLang});
     }
 });

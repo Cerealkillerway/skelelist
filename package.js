@@ -33,14 +33,27 @@ Package.onUse(function(api) {
     api.addFiles(['styles/skelelist.scss'], ['client']);
 
     // templates
-    api.addFiles(['templates/skelelist.html'], ['client']);
+    api.addFiles([
+        'templates/listLayout.html',
+        'templates/listToolbars.html',
+        'templates/listActions.html',
+        'templates/listActionDelete.html',
+        'templates/listActionChangePassword.html',
+        'templates/listCommonAssets.html'
+    ],
+    ['client']);
 
     // libraries
     api.addFiles([
-        'helpers/listHelpers.js',
-        
-        'events/listEvents.js',
-        'events/changePasswordEvents.js'
+        'events/listLayoutEvents.js',
+        'events/listToolbarsEvents.js',
+        'events/listActionsEvents.js',
+        'events/listActionDeleteEvents.js',
+        'events/listActionChangePasswordEvents.js',
+
+        'helpers/listLayoutHelpers.js',
+        'helpers/listToolbarsHelpers.js',
+        'helpers/listActionDeleteHelpers.js'
     ],
     ['client']);
 

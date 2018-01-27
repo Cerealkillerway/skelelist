@@ -1,0 +1,58 @@
+<!-- main skelelist template -->
+<template name="skelelist">
+    <div class="skelelist">
+        {{#unless isDataReady this}}
+            {{> gearContent this.schema}}
+        {{else}}
+            {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
+        {{/unless}}
+    </div>
+</template>
+
+
+<!-- table list style -->
+<template name="skelelistTable">
+    {{> skelelistLangBar}}
+
+    <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">
+        <thead>
+            <tr>
+                {{#with this.schema.__listView}}
+                    {{#each this.itemFields}}
+                        <th>{{label this}}</th>
+                    {{/each}}
+                    {{#if this.itemActions}}
+                        <th>{{_ "actions_lbl"}}</th>
+                    {{/if}}
+                {{/with}}
+            </tr>
+        </thead>
+        <tbody>
+            {{#each paginate this}}
+                {{#with listRecord this ../schema.__listView}}
+                    <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
+                        {{#each ../../schema.__listView.itemFields}}
+                            {{#with field this ../.. ../../../schema ../../..}}
+                                <td>
+                                    {{#if this.link}}
+                                        <a class="skelelistLink" href="{{this.link}}">
+                                            {{this.value}}
+                                        </a>
+                                    {{else}}
+                                        {{this.value}}
+                                    {{/if}}
+                                </td>
+                            {{/with}}
+                        {{/each}}
+
+                        {{> skelelistActions (actionsData this)}}
+                    </tr>
+                {{/with}}
+            {{/each}}
+        </tbody>
+    </table>
+
+    {{#if isPaginated this}}
+        {{> skelelistPagination this}}
+    {{/if}}
+</template>
