@@ -5,6 +5,8 @@
     /_______  /__|_ \\___  >____/\___  >____/__/____  > |__|
             \/     \/    \/          \/             \/
 
+v3.7.13
+
 #### INTRO
 **Skelelist** package is part of the **Skeletor** project and is not meant be used alone.
 
