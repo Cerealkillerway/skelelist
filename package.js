@@ -11,12 +11,14 @@ Package.onUse(function(api) {
     // namespace
     api.addFiles(['namespace.js'], ['client', 'server']);
 
+    api.versionsFrom('METEOR@1.6.1');
+
     // dependencies
     api.use([
         'jquery',
         'underscore@1.0.0',
-        'fourseven:scss',
-        'blaze-html-templates'
+        'fourseven:scss@4.5.4',
+        'blaze-html-templates@1.1.2'
     ],
     ['client']);
 
