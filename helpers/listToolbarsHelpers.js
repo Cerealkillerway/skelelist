@@ -15,7 +15,7 @@ Template.skelelistLangBar.helpers({
         return result;
     },
     isActiveLang: function(buttonLang) {
-        if (TAPi18n.getLanguage() === buttonLang) {
+        if (FlowRouter.getParam('itemLang') === buttonLang) {
             return 'active';
         }
     }
