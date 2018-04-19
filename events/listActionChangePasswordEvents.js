@@ -54,7 +54,7 @@ Template.userChangePasswordToolbar.events({
         let fields = formContext.fields;
         let gatheredData = Skeleform.utils.skeleformGatherData(data, fields);
 
-        if (Skeleform.utils.skeleformValidateForm(gatheredData, fields)) {
+        if (Skeleform.validate.skeleformValidateForm(gatheredData, fields)) {
             Meteor.call('updateUserPassword', formContext.item._id, $('#newPassword').val(), function(error, result) {
                 if (error) {
                     if (error.error === 'unauthorized') {
