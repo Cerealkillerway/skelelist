@@ -1,3 +1,6 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+
 Template.skelelistLangBar.events({
     'click .langFlag': function(event, instance) {
         let newLang = $(event.target).closest('.langFlag').data('lang');

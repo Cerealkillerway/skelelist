@@ -1,3 +1,6 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+
 // skelelist
 Template.skelelist.onRendered(function() {
     let options = this.data.schema.__listView.options;
