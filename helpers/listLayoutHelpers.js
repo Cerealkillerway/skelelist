@@ -18,13 +18,7 @@ Template.registerHelper('isPaginated', function(schemaName) {
 Template.skelelist.helpers({
     listStyle: function(style) {
         return 'skelelist' + style.capitalize();
-    },
-    isDataReady: function(context) {
-        if (context.skeleSubsReady.get() === false) {
-            return false;
-        }
-        return true;
-    },
+    }
 });
 
 

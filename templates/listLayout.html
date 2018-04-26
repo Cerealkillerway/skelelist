@@ -1,7 +1,7 @@
 <!-- main skelelist template -->
 <template name="skelelist">
     <div class="skelelist">
-        {{#unless isDataReady this}}
+        {{#unless skeleIsDataReady this}}
             {{> gearContent this.schema}}
         {{else}}
             {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
