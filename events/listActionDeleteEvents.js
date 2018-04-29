@@ -37,11 +37,11 @@ Template.skelelistActionDelete.events({
             Meteor.call(deleteMethod, id, data.schemaName, function(error, result) {
                 if (error) {
                     if (result.error === 'unauthorized') {
-                        Materialize.toast(TAPi18n.__('permissions_error'), 5000, 'permissionsError');
+                        Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
                         SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                     else {
-                        Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                        Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
                         SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                 }
@@ -126,11 +126,11 @@ Template.skelelistActionDeleteTimerConfirm.events({
             Meteor.call(deleteMethod, id, data.schemaName, function(error, result) {
                 if (error) {
                     if (result.error === 'unauthorized') {
-                        Materialize.toast(TAPi18n.__('permissions_error'), 5000, 'permissionsError');
+                        Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
                         SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                     else {
-                        Materialize.toast(TAPi18n.__('serverError_error'), 5000, 'error');
+                        Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
                         SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                 }
