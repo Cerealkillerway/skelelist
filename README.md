@@ -60,7 +60,7 @@ The *"skelelistOptions"* object can be appended by a skelelist callback to the c
 ##### delete
 
 - **confirm**: *[boolean/object] (optional)* defines if the delete action must ask a confirmation; can be set to *true* to use defaults or can be an object that can specify all the available options; (default to false);
-- - **template**: *[string] (optional)* name of the component to use as confirmation UI; default to *skelelistActionDeleteTimerConfirm*;
+- - **template**: *[string] (optional)* name of the component to use as confirmation UI; default to *skelelistActionDeleteTimerConfirm*; available values: "skelelistActionDeleteConfirm", "skelelistActionDeleteTimerConfirm";
 - - **timeout**: *[number] (optional, available only if template = "skelelistActionDeleteTimerConfirm"); number of milliseconds to use as timeout to confirm deletion (default 3000); must be a multiple of 1000;
 
 

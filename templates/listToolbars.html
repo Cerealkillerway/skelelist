@@ -1,13 +1,15 @@
 <!-- list lang bar -->
 <template name="skelelistLangBar">
-    {{i18n "contentsLang_lbl"}}
-    <div class="skelelistLangs">
-        {{#each langs}}
-            <div class="langFlag {{isActiveLang this}}" data-lang="{{this}}">
-                <img src="/images/icons/lang/{{this}}.jpg">
-            </div>
-        {{/each}}
-    </div>
+    {{#if isMultilingual}}
+        {{i18n "contentsLang_lbl"}}
+        <div class="skelelistLangs">
+            {{#each langs}}
+                <div class="langFlag {{isActiveLang this}}" data-lang="{{this}}">
+                    <img src="{{skeleStaticPath}}/images/icons/lang/{{this}}.jpg">
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
 </template>
 
 

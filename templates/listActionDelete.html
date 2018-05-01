@@ -7,7 +7,7 @@
 </template>
 
 
-<!-- delete confirmation block -->
+<!-- delete timer confirmation block -->
 <template name="skelelistActionDeleteTimerConfirm">
     <div class="deleteConfirmation">
         <div class="barLabel">
@@ -23,6 +23,24 @@
         </div>
         <div class="progress">
             <div class="determinate"></div>
+        </div>
+    </div>
+</template>
+
+
+<!-- delete buttons confirmation block -->
+<template name="skelelistActionDeleteConfirm">
+    <div class="deleteConfirmation">
+        <div><b>{{i18n "deleteConfirmation_lbl"}}</b></div>
+        <div>
+            <a class="confirmDeletion secondColor waves-effect waves-light btn">
+                <i class="material-icons left">done</i>
+                {{i18n "yes_lbl"}}
+            </a>
+            <a class="cancelDeletion firstColor waves-effect waves-light btn">
+                <i class="material-icons left">close</i>
+                {{i18n "no_lbl"}}
+            </a>
         </div>
     </div>
 </template>

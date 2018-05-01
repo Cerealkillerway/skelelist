@@ -50,7 +50,7 @@ Template.skelelistActionDelete.events({
     }
 });
 
-// delete confirmation block
+// delete timer confirmation block
 Template.skelelistActionDeleteTimerConfirm.onCreated(function() {
     let confirmOptions = this.data.actionOptions.confirm;
     let timeoutSeconds = (confirmOptions.timeout) / 1000 || 3;
@@ -140,5 +140,42 @@ Template.skelelistActionDeleteTimerConfirm.events({
     'click .cancelDeletion': function(event, instance) {
         Meteor.clearTimeout(instance.restoreDeleteBtnTimeout);
         instance.cancelDeletion(instance);
+    }
+});
+
+
+// delete buttons confirmation block
+Template.skelelistActionDeleteConfirm.events({
+    'click .confirmDeletion' : function(event, instance) {
+        let data = instance.data;
+        let id = data.record._id;
+        let deleteMethod;
+
+        if (data.schema._methods && data.schema._methods.delete) {
+            deleteMethod = data.schema.__methods.delete
+        }
+        else {
+            deleteMethod = Skeletor.configuration.defaultMethods.delete;
+        }
+
+        Meteor.call(deleteMethod, id, data.schemaName, function(error, result) {
+            if (error) {
+                if (result.error === 'unauthorized') {
+                    Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
+                    SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                }
+                else {
+                    Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
+                    SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                }
+            }
+        });
+    },
+    'click .cancelDeletion': function(event, instance) {
+        instance.$('.deleteConfirmation').addClass('hide');
+        instance.$('.skelelistDelete').removeClass('hide');
+
+        instance.data.actionContainerInstance.$('.skelelistActions').show(0);
+        Blaze.remove(instance.view);
     }
 });
