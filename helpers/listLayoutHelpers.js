@@ -1,4 +1,4 @@
-Template.registerHelper('isPaginated', function(schemaName) {
+Template.registerHelper('skelelistIsPaginated', function(schemaName) {
     let listViewObject = Skeletor.Schemas[schemaName].__listView;
 
     if (!listViewObject) {

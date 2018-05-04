@@ -20,7 +20,7 @@
     <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">
         <thead>
             <tr>
-                {{#with (skeleGetReactiveVar this.listView)}}
+                {{#with (skeleGetReactiveVar this.schema.listView)}}
                     {{#each this.itemFields}}
                         <th>{{label this}} {{{isSorted this}}}</th>
                     {{/each}}
@@ -32,9 +32,9 @@
         </thead>
         <tbody>
             {{#each paginate this}}
-                {{#with listRecord this ../schema.__listView}}
+                {{#with listRecord this ../schema.listView}}
                     <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
-                        {{#each ../../schema.__listView.itemFields}}
+                        {{#each (skeleGetReactiveVar ../../schema.listView property="itemFields")}}
                             {{#with field this ../.. ../../../schema ../../..}}
                                 <td>
                                     {{#if this.link}}
@@ -55,6 +55,7 @@
         </tbody>
     </table>
 
+    {{skeleLog this}}
     {{#if isPaginated this}}
         {{> skelelistPagination this}}
     {{/if}}

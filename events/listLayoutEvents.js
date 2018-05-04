@@ -4,10 +4,10 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 // skelelist
 Template.skelelist.onCreated(function() {
     // make schema's global __lisvView reactive
-    this.data.listView = new ReactiveVar(this.data.schema.__listView);
+    this.data.schema.listView = new ReactiveVar(this.data.schema.__listView);
 });
 Template.skelelist.onRendered(function() {
-    let options = this.data.listView.get().options;
+    let options = this.data.schema.listView.get().options;
 
     SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 
@@ -27,10 +27,11 @@ Template.skelelist.events({
         Session.set('currentItem', documentId);
     },
     'click #test': function(event, instance) {
-        let listView = instance.data.listView.get();
+        console.log(instance);
+        let listView = instance.data.schema.listView.get();
 
         listView.sort.title = -1 * listView.sort.title;
 
-        instance.data.listView.set(listView);
+        instance.data.schema.listView.set(listView);
     }
 });
