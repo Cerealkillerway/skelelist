@@ -3,64 +3,79 @@
 
 
 
-.skelelistLangs {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 25px;
+.skelelist {
+    table {
+        table-layout: fixed;
+    }
 
-    .langFlag {
-        float: left;
-        margin: 3px 4px;
+    .skelelistLangs {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 25px;
 
-        img {
-            max-height: 30px;
-            border: solid 3px darken($thirdPanelColorBorder, 10%);
-            cursor: pointer !important;
-        }
+        .langFlag {
+            float: left;
+            margin: 3px 4px;
 
-        &.active {
             img {
-                border-color: $firstHoverColor;
+                max-height: 30px;
+                border: solid 3px darken($thirdPanelColorBorder, 10%);
+                cursor: pointer !important;
+            }
+
+            &.active {
+                img {
+                    border-color: $firstHoverColor;
+                }
             }
         }
     }
-}
 
-.skelelistPageBtn {
-    padding: 3px 11px;
-}
+    .skelelistPageBtn {
+        padding: 3px 11px;
+    }
 
-.skelelistActions {
-    .btn {
-        &:not(:last-child) {
-            margin-right: 5px;
+    .skelelistActions {
+        .btn {
+            &:not(:last-child) {
+                margin-right: 5px;
+            }
+        }
+
+        #skeletorUserChangePasswordForm {
+            margin-top: 35px;
         }
     }
 
-    #skeletorUserChangePasswordForm {
-        margin-top: 35px;
-    }
-}
+    .skelelistActionExtras {
+        .deleteConfirmation {
+            position: relative;
 
-.skelelistActionExtras {
-    .deleteConfirmation {
-        position: relative;
+            .cancelDeletion {
+                font-weight: bold;
+                cursor: pointer;
+                margin-left: 7px;
+            }
 
-        .cancelDeletion {
-            color: $secondPanelColor;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 7px;
-        }
+            .barLabel {
+                font-size: 11px;
+                position: absolute;
+                top: -20px;
+            }
 
-        .barLabel {
-            font-size: 11px;
-            position: absolute;
-            top: -20px;
-        }
-
-        .switch {
-            margin-top: 10px;
+            .switch {
+                margin-top: 10px;
+            }
         }
     }
+
+    .skeleLoadMore {
+        width: 100%;
+        padding: 12px 35px;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
 }

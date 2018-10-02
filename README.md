@@ -17,6 +17,10 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 **__listView**: *[object] (optional)* skelelist options; (not needed if skelelist is not used for this chema);
 
 - **style**: *[string] (mandatory)*type of list to create; default "table";
+- **options**: *[object] (optional)* dictionary of options for the listView;
+- - **pagination**: *[pagination] (boolean)* tells Skelelist to paginate documents in the current view; (default false, all documents loaded together);
+- - **itemsPerPage**: *[integer] (optional)* number of documents to load per time; (default 10);
+- - **autoLoad**: *[boolean] (optional)* tells Skelelist to load more documents in a paginated list when the "load more" placeholder comes into view automatically (default false);
 - **classes**: *[string] (optional)* CSS classes to assign to the listView;
 - **itemFields**: *[array of objects] (mandatory)* dictionary of fields to use in the listView; each object can have the following properties:
 - - **name**: *[string] (mandatory)* the name of the field; must match the name defined on the field's object in the *fields* array of the schema;
@@ -43,6 +47,29 @@ The *"skelelistOptions"* object can be appended by a skelelist callback to the c
 
     actions: {
         delete: false
+    }
+
+usecase: assign `secondColor` class to the "SUPERUSER" role in roles list
+
+    __listView {
+        ...
+
+        callbacks: {
+            beforeRendering: function(listRecord) {
+                'use strict';
+                // forbid delete button for the SUPERUSER role
+                if (listRecord.name === 'SUPERUSER') {
+                    listRecord.skelelistOptions = {
+                        class: 'secondColor',
+                        actions: {
+                            delete: false
+                        }
+                    };
+                }
+
+                return listRecord;
+            }
+        }
     }
 
 

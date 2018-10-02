@@ -15,23 +15,7 @@
 
 <!-- pagination -->
 <template name="skelelistPagination">
-    <ul class="pagination">
-        <li class="waves-effect waves-light pointer prevPage">
-            <a>
-                <i class="material-icons">chevron_left</i>
-            </a>
-        </li>
-
-        {{#each pages this}}
-            <li data-number="{{this}}" class="waves-effect waves-light skelelistPageBtn pointer {{isCurrentPage this}}">
-                <div>{{this}}</div>
-            </li>
-        {{/each}}
-
-        <li class="waves-effect waves-light pointer nextPage">
-            <a>
-                <i class="material-icons">chevron_right</i>
-            </a>
-        </li>
-    </ul>
+    <div class="skeleLoadMore">
+        {{i18n "loadMore_lbl"}}
+    </div>
 </template>

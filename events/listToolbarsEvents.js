@@ -11,71 +11,40 @@ Template.skelelistLangBar.events({
 
 
 // skelelist pagination
-Template.skelelistPagination.onRendered(function() {
-    let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-    let lastPage = this.lastPage;
+Template.skelelistPagination.onCreated(function() {
+    let collection = this.data.schema.__collection;
+    let currentPage = Session.get(collection + '_page');
 
-    if (currentPage === lastPage) {
-        this.$('.nextPage').addClass('disabled');
-    }
-
-    if (currentPage === 1) {
-        this.$('.prevPage').addClass('disabled');
+    if (!currentPage) {
+        Session.set(collection + '_page', 1);
     }
 });
-
 
 Template.skelelistPagination.events({
-    'click .skelelistPageBtn': function(event, instance) {
-        let number = $(event.target).closest('li').data('number');
-
-        FlowRouter.setQueryParams({page: number});
-
-        // manage enabling disabling next button
-        if (number === instance.lastPage) {
-            instance.$('.nextPage').addClass('disabled');
-        }
-        else {
-            instance.$('.nextPage').removeClass('disabled');
+    'click .skeleLoadMore': function(event, instance) {
+        // do nothing if autoLoad is enabled
+        if (instance.data.schema.__listView.options.autoLoad === true) {
+            return false;
         }
 
-        // manage enabling disabling prev button
-        if (number === 1) {
-            instance.$('.prevPage').addClass('disabled');
-        }
-        else {
-            instance.$('.prevPage').removeClass('disabled');
-        }
+        let collection = instance.data.schema.__collection;
+        let currentPage = Session.get(collection + '_page');
 
-        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
-    },
-    'click .nextPage': function(event, instance) {
-        let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-        let lastPage = instance.lastPage;
+        currentPage++;
 
-        if (currentPage < lastPage) {
-            FlowRouter.setQueryParams({page: currentPage + 1});
-        }
+        for (let loadMore of instance.data.loadMore) {
+            console.log(currentPage);
 
-        instance.$('.prevPage').removeClass('disabled');
-        if ((currentPage + 1) === lastPage) {
-            $(event.target).closest('li').addClass('disabled');
+            let documentsList = Skeletor.subsManagers[loadMore.subscriptionHandler].subscribe(
+                loadMore.subscriptionName,
+                loadMore.collection,
+                loadMore.query,
+                loadMore.options,
+                loadMore.schemaName,
+                currentPage
+            );
         }
 
-        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
-    },
-    'click .prevPage': function(event, instance) {
-        let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-
-        if (currentPage > 1) {
-            FlowRouter.setQueryParams({page: currentPage - 1});
-        }
-
-        instance.$('.nextPage').removeClass('disabled');
-        if ((currentPage - 1) === 1) {
-            $(event.target).closest('li').addClass('disabled');
-        }
-
-        SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+        Session.set(collection + '_page', currentPage);
     }
-});
+})

@@ -6,6 +6,8 @@ Template.skelelist.onCreated(function() {
     // make schema's global __lisvView reactive
     this.data.schema.listView = new ReactiveVar(this.data.schema.__listView);
 });
+
+
 Template.skelelist.onRendered(function() {
     let options = this.data.schema.listView.get().options;
 
@@ -18,6 +20,8 @@ Template.skelelist.onRendered(function() {
         }
     }
 });
+
+
 Template.skelelist.events({
     'click .skelelistLink': function(event, instance) {
         let documentId = $(event.target).closest('tr').data('id');
@@ -27,10 +31,11 @@ Template.skelelist.events({
         Session.set('currentItem', documentId);
     },
     'click #test': function(event, instance) {
-        console.log(instance);
         let listView = instance.data.schema.listView.get();
 
-        listView.sort.title = -1 * listView.sort.title;
+        for (key of _.keys(listView.sort)) {
+            listView.sort[key] = listView.sort[key] * (-1);
+        }
 
         instance.data.schema.listView.set(listView);
     }

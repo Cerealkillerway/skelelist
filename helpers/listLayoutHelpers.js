@@ -1,19 +1,3 @@
-Template.registerHelper('skelelistIsPaginated', function(schemaName) {
-    let listViewObject = Skeletor.Schemas[schemaName].__listView;
-
-    if (!listViewObject) {
-        return '';
-    }
-
-    let options = listViewObject.options;
-
-    if (options && options.pagination) {
-        return '&page=1';
-    }
-    return '';
-});
-
-
 // skelelist
 Template.skelelist.helpers({
     listStyle: function(style) {
