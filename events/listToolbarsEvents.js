@@ -15,6 +15,8 @@ Template.skelelistPagination.onCreated(function() {
     let collection = this.data.schema.__collection;
     let currentPage = Session.get(collection + '_page');
 
+    this.data.appendLoadMore = new ReactiveVar(true);
+
     if (!currentPage) {
         Session.set(collection + '_page', 1);
     }
@@ -28,12 +30,14 @@ Template.skelelistPagination.events({
         }
 
         let collection = instance.data.schema.__collection;
+        let itemsPerPage = instance.data.schema.__listView.options.itemsPerPage;
         let currentPage = Session.get(collection + '_page');
+        let numberOfDocuments;
 
         currentPage++;
 
         for (let loadMore of instance.data.loadMore) {
-            console.log(currentPage);
+            SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
 
             let documentsList = Skeletor.subsManagers[loadMore.subscriptionHandler].subscribe(
                 loadMore.subscriptionName,
@@ -41,7 +45,16 @@ Template.skelelistPagination.events({
                 loadMore.query,
                 loadMore.options,
                 loadMore.schemaName,
-                currentPage
+                currentPage,
+                function() {
+                    numberOfDocuments = Skeletor.Data[collection].find().count();
+
+                    if ((numberOfDocuments - ((currentPage - 1) * itemsPerPage)) < itemsPerPage) {
+                        SkeleUtils.GlobalUtilities.logger('All documents loaded...', 'skelelist');
+
+                        instance.data.appendLoadMore.set(false);
+                    }
+                }
             );
         }
 

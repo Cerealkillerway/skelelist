@@ -1,11 +1,7 @@
 <!-- main skelelist template -->
 <template name="skelelist">
     <div class="skelelist">
-        {{#unless skeleIsDataReady this}}
-            {{> gearContent this.schema}}
-        {{else}}
-            {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
-        {{/unless}}
+        {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
     </div>
 </template>
 
@@ -17,43 +13,47 @@
             test
     </div>
 
-    <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">
-        <thead>
-            <tr>
-                {{#with (skeleGetReactiveVar this.schema.listView)}}
-                    {{#each this.itemFields}}
-                        <th>{{label this}} {{{isSorted this}}}</th>
-                    {{/each}}
-                    {{#if this.itemActions}}
-                        <th>{{i18n "actions_lbl"}}</th>
-                    {{/if}}
-                {{/with}}
-            </tr>
-        </thead>
-        <tbody>
-            {{#each paginate this}}
-                {{#with listRecord this ../schema.listView}}
-                    <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
-                        {{#each (skeleGetReactiveVar ../../schema.listView property="itemFields")}}
-                            {{#with field this ../.. ../../../schema ../../..}}
-                                <td>
-                                    {{#if this.link}}
-                                        <a class="skelelistLink" href="{{this.link}}">
-                                            {{this.value}}
-                                        </a>
-                                    {{else}}
-                                        {{this.value}}
-                                    {{/if}}
-                                </td>
-                            {{/with}}
+    {{#unless skeleIsDataReady this}}
+        {{> gearContent this.schema}}
+    {{else}}
+        <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">
+            <thead>
+                <tr>
+                    {{#with (skeleGetReactiveVar this.schema.listView)}}
+                        {{#each this.itemFields}}
+                            <th>{{label this}} {{{isSorted this}}}</th>
                         {{/each}}
+                        {{#if this.itemActions}}
+                            <th>{{i18n "actions_lbl"}}</th>
+                        {{/if}}
+                    {{/with}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each paginate this}}
+                    {{#with listRecord this ../schema.listView}}
+                        <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
+                            {{#each (skeleGetReactiveVar ../../schema.listView property="itemFields")}}
+                                {{#with field this ../.. ../../../schema ../../..}}
+                                    <td>
+                                        {{#if this.link}}
+                                            <a class="skelelistLink" href="{{this.link}}">
+                                                {{this.value}}
+                                            </a>
+                                        {{else}}
+                                            {{this.value}}
+                                        {{/if}}
+                                    </td>
+                                {{/with}}
+                            {{/each}}
 
-                        {{> skelelistActions (actionsData this)}}
-                    </tr>
-                {{/with}}
-            {{/each}}
-        </tbody>
-    </table>
+                            {{> skelelistActions (actionsData this)}}
+                        </tr>
+                    {{/with}}
+                {{/each}}
+            </tbody>
+        </table>
+    {{/unless}}
 
     {{#if isPaginated this}}
         {{> skelelistPagination this}}

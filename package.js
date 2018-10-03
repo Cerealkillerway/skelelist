@@ -18,6 +18,7 @@ Package.onUse(function(api) {
         'jquery',
         'underscore@1.0.0',
         'fourseven:scss@4.5.4',
+        'reactive-var',
         'blaze-html-templates@1.1.2'
     ],
     ['client']);
