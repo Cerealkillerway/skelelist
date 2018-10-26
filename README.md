@@ -25,6 +25,7 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
 - **itemFields**: *[array of objects] (mandatory)* dictionary of fields to use in the listView; each object can have the following properties:
 - - **name**: *[string] (mandatory)* the name of the field; must match the name defined on the field's object in the *fields* array of the schema;
 - - **link**: *[boolean] (optional)* defines if the field should be show as a link to the form view of the current record;
+- - **allowUndefined**: *[boolean] (optional)* allow the document to be displayed in the list also if the current field has value `undefined` (normally documents with undefined values needed for the list view are stripped out); (default false);
 - **itemActions**: *[array of objects] (mandatory)* dictionary of actions to use for each document in the list; (built in actions: "delete", "changePassword"); please see below for detail infos about every action object;
 - **detailLink**: *[object] (mandatory)* definition of the link for detail view
 - - **basePath**: *[string] (mandatory)* the path definition for the link

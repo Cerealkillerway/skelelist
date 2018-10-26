@@ -9,19 +9,14 @@
 <!-- table list style -->
 <template name="skelelistTable">
     {{> skelelistLangBar}}
-    <div id="test" class="btn secondColor">
-            test
-    </div>
 
-    {{#unless skeleIsDataReady this}}
-        {{> gearContent this.schema}}
-    {{else}}
+    {{#if skeleIsDataReady this}}
         <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">
             <thead>
                 <tr>
                     {{#with (skeleGetReactiveVar this.schema.listView)}}
                         {{#each this.itemFields}}
-                            <th>{{label this}} {{{isSorted this}}}</th>
+                            <th class="skeleListViewHeader">{{label this}} {{{isSorted this}}}</th>
                         {{/each}}
                         {{#if this.itemActions}}
                             <th>{{i18n "actions_lbl"}}</th>
@@ -30,8 +25,8 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each paginate this}}
-                    {{#with listRecord this ../schema.listView}}
+                {{#each getDocumentsList this}}
+                    {{#with listRecord this ../schema.listView ../schema}}
                         <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
                             {{#each (skeleGetReactiveVar ../../schema.listView property="itemFields")}}
                                 {{#with field this ../.. ../../../schema ../../..}}
@@ -53,7 +48,9 @@
                 {{/each}}
             </tbody>
         </table>
-    {{/unless}}
+    {{else}}
+        {{> gearContent this.schema}}
+    {{/if}}
 
     {{#if isPaginated this}}
         {{> skelelistPagination this}}

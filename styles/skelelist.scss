@@ -8,6 +8,20 @@
         table-layout: fixed;
     }
 
+    th, td {
+        padding: 15px 25px;
+    }
+
+    .skeleListViewHeader {
+        position: relative;
+        cursor: pointer;
+
+        .material-icons {
+            position: absolute;
+            margin-left: 15px;
+        }
+    }
+
     .skelelistLangs {
         display: inline-block;
         vertical-align: middle;
