@@ -1,7 +1,17 @@
+import { Counts } from 'meteor/ros:publish-counts';
+
+
 // skelelist
 Template.skelelist.helpers({
     listStyle: function(style) {
         return 'skelelist' + style.capitalize();
+    },
+
+    documentsCounter: function() {
+        let schema = Template.instance().data.schema;
+        let collection = schema.__collection;
+
+        return Counts.get(`${collection}Counter`);
     }
 });
 

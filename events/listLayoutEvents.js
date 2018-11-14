@@ -1,10 +1,16 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Counts } from 'meteor/ros:publish-counts';
 
 
 // skelelist
 Template.skelelist.onCreated(function() {
     // make schema's global __lisvView reactive
-    this.data.schema.listView = new ReactiveVar(this.data.schema.__listView);
+    let schema = this.data.schema;
+    let collection = schema.__collection;
+
+    schema.listView = new ReactiveVar(this.data.schema.__listView);
+
+    Skeletor.subsManagers.countersSubs.subscribe('countCollection', collection);
 });
 
 

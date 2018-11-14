@@ -12,52 +12,89 @@ Template.skelelistLangBar.events({
 
 // skelelist pagination
 Template.skelelistPagination.onCreated(function() {
-    let collection = this.data.schema.__collection;
-    let currentPage = Session.get(collection + '_page');
+    let schema = this.data.schema;
+    let collection = schema.__collection;
+    let itemsPerPage = schema.__listView.options.itemsPerPage;
+    this.currentPage = new ReactiveVar();
 
     this.data.appendLoadMore = new ReactiveVar(true);
 
-    if (!currentPage) {
-        Session.set(collection + '_page', 1);
-    }
+    // initialize currentPage
+    this.autorun(() => {
+        if (this.data.skeleSubsReady.get()) {
+            let numberOfLoadedDocuments = Skeletor.Data[collection].find().count();
+            let currentPage = Math.ceil(numberOfLoadedDocuments / itemsPerPage);
+
+            this.currentPage.set(currentPage);
+        }
+        else {
+            this.currentPage.set(1);
+        }
+    });
 });
 
 Template.skelelistPagination.events({
     'click .skeleLoadMore': function(event, instance) {
+        let data = instance.data;
+        let schema = data.schema;
+
         // do nothing if autoLoad is enabled
-        if (instance.data.schema.__listView.options.autoLoad === true) {
+        if (schema.__listView.options.autoLoad === true) {
             return false;
         }
 
-        let collection = instance.data.schema.__collection;
-        let itemsPerPage = instance.data.schema.__listView.options.itemsPerPage;
-        let currentPage = Session.get(collection + '_page');
-        let numberOfDocuments;
+        let collection = schema.__collection;
+        let subManager = schema.__subManager;
+        let itemsPerPage = schema.__listView.options.itemsPerPage;
+        let currentPage = instance.currentPage.get();
+        let numberOfLoadedDocuments;
+        let options = {
+            fields: {}
+        };
 
         currentPage++;
 
-        for (let loadMore of instance.data.loadMore) {
-            SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
+        for (let field of schema.__listView.itemFields) {
+            options.fields[field.name] = 1;
+        }
 
-            let documentsList = Skeletor.subsManagers[loadMore.subscriptionHandler].subscribe(
-                loadMore.subscriptionName,
-                loadMore.collection,
-                loadMore.query,
-                loadMore.options,
-                loadMore.schemaName,
+        SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
+
+        function loadMoreDocuments() {
+            numberOfLoadedDocuments = Skeletor.Data[collection].find().count();
+
+            if ((numberOfLoadedDocuments - ((currentPage - 1) * itemsPerPage)) < itemsPerPage) {
+                SkeleUtils.GlobalUtilities.logger('All documents loaded...', 'skelelist');
+
+                instance.data.appendLoadMore.set(false);
+            }
+        }
+
+        let documentsList;
+
+        if (subManager) {
+            documentList = Skeletor.subsManagers[subManager].subscribe(
+                'findDocuments',
+                collection,
+                {},
+                options,
+                data.schemaName,
                 currentPage,
-                function() {
-                    numberOfDocuments = Skeletor.Data[collection].find().count();
-
-                    if ((numberOfDocuments - ((currentPage - 1) * itemsPerPage)) < itemsPerPage) {
-                        SkeleUtils.GlobalUtilities.logger('All documents loaded...', 'skelelist');
-
-                        instance.data.appendLoadMore.set(false);
-                    }
-                }
+                loadMoreDocuments
+            );
+        }
+        else {
+            documentList = Meteor.subscribe(
+                'findDocuments',
+                collection,
+                {},
+                options,
+                data.schemaName,
+                currentPage,
+                loadMoreDocuments
             );
         }
 
-        Session.set(collection + '_page', currentPage);
+        instance.currentPage.set(currentPage);
     }
 })
