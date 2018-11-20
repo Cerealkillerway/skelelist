@@ -1,3 +1,16 @@
+<!-- list query and infos -->
+<template name="skelelistInfo">
+    <div class="skelelistInfo">
+        <div class="skeleCounter">
+            <div class="skeleCounterDescription">
+                {{i18n "totalNumber_lbl"}}
+            </div>
+            <div class="skeleCounterNumber">{{documentsCounter}}</div>
+        </div>
+    </div>
+</template>
+
+
 <!-- list lang bar -->
 <template name="skelelistLangBar">
     {{#if isMultilingual}}

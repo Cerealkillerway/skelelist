@@ -1,6 +1,21 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 
+// query and infos
+Template.skelelistInfo.helpers(SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
+Template.skelelistInfo.helpers({
+    showTotalNumber: function() {
+        let instance = Template.instance();
+        let listSchema = instance.data.schema.__listView;
+
+        if (listSchema.info && listSchema.info.showTotalNumber === false) {
+            return false;
+        }
+        return true;
+    }
+});
+
+
 // list lang bar
 Template.skelelistLangBar.helpers({
     isMultilingual: function() {
@@ -38,18 +53,5 @@ Template.skelelistLangBar.helpers({
         if (FlowRouter.getParam('itemLang') === buttonLang) {
             return 'active';
         }
-    }
-});
-
-
-// pagination template
-Template.skelelistPagination.helpers({
-    isCurrentPage: function(pageNumber) {
-        let currentPage = parseInt(FlowRouter.getQueryParam('page'));
-
-        if (pageNumber === currentPage) {
-            return 'active';
-        }
-        return '';
     }
 });

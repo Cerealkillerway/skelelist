@@ -1,4 +1,5 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Counts } from 'meteor/ros:publish-counts';
 
 
 Template.skelelistLangBar.events({
@@ -45,25 +46,31 @@ Template.skelelistPagination.events({
 
         let collection = schema.__collection;
         let subManager = schema.__subManager;
-        let itemsPerPage = schema.__listView.options.itemsPerPage;
+        let listSchema = schema.__listView;
+        let itemsPerPage = listSchema.options.itemsPerPage;
         let currentPage = instance.currentPage.get();
         let numberOfLoadedDocuments;
+        let totalNumberOfDocuments;
         let options = {
             fields: {}
         };
 
         currentPage++;
 
-        for (let field of schema.__listView.itemFields) {
+        for (let field of listSchema.itemFields) {
             options.fields[field.name] = 1;
+        }
+        for (let param of listSchema.detailLink.params) {
+            options.fields[param] = 1;
         }
 
         SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
 
         function loadMoreDocuments() {
+            totalNumberOfDocuments = Counts.get(`${collection}Counter`);
             numberOfLoadedDocuments = Skeletor.Data[collection].find().count();
 
-            if ((numberOfLoadedDocuments - ((currentPage - 1) * itemsPerPage)) < itemsPerPage) {
+            if ((totalNumberOfDocuments - numberOfLoadedDocuments) === 0) {
                 SkeleUtils.GlobalUtilities.logger('All documents loaded...', 'skelelist');
 
                 instance.data.appendLoadMore.set(false);
@@ -74,7 +81,7 @@ Template.skelelistPagination.events({
 
         if (subManager) {
             documentList = Skeletor.subsManagers[subManager].subscribe(
-                'findDocuments',
+                'rawFindDocuments',
                 collection,
                 {},
                 options,
@@ -85,7 +92,7 @@ Template.skelelistPagination.events({
         }
         else {
             documentList = Meteor.subscribe(
-                'findDocuments',
+                'rawFindDocuments',
                 collection,
                 {},
                 options,

@@ -39,19 +39,29 @@ Template.skelelistTable.events({
 
     'click .skeleListViewHeader': function(event, instance) {
         // handle sorting by clicking on column header
-        let $target = $(event.target);
+        let $target = $(event.currentTarget);
         let $headers = instance.$('.skeleListViewHeader');
         let index = $headers.index($target[0]);
         let listSchema = instance.data.schema.listView.get();
         let fieldName = listSchema.itemFields[index].name;
+        let newSortObject = {};
 
         if (listSchema.sort[fieldName] === undefined) {
-            listSchema.sort = {};
-            listSchema.sort[fieldName] = 1;
+            newSortObject[fieldName] = {
+                direction: 1
+            };
         }
         else {
-            listSchema.sort[fieldName] = listSchema.sort[fieldName] * (-1);
+            newSortObject[fieldName] = {
+                direction: listSchema.sort[fieldName].direction * (-1)
+            };
+
+            if (listSchema.sort[fieldName].caseInsensitive) {
+                newSortObject[fieldName].caseInsensitive = true;
+            }
         }
+
+        listSchema.sort = newSortObject;
 
         instance.data.schema.listView.set(listSchema);
     }

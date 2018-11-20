@@ -2,8 +2,25 @@
 @import "{}/client/styles/panelColors";
 
 
-
 .skelelist {
+    .skelelistInfo {
+        .skeleCounter {
+            background-color: $thirdPanelColor;
+            color: $thirdPanelColorText;
+
+            .skeleCounterDescription {
+                display: inline-block;
+                padding: 15px 25px;
+            }
+
+            .skeleCounterNumber {
+                display: inline-block;
+                background-color: $secondPanelColor;
+                padding: 15px 25px;
+            }
+        }
+    }
+
     table {
         table-layout: fixed;
     }
