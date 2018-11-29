@@ -33,11 +33,11 @@ Inside a Skeletor app this package is used to build list views; it supports pagi
     - **allowUndefined**: *[boolean] (optional)* allow the document to be displayed in the list also if the current field has value `undefined` (normally documents with undefined values needed for the list view are stripped out); (default false);
 - **itemActions**: *[array of objects] (mandatory)* dictionary of actions to use for each document in the list; (built in actions: "delete", "changePassword"); please see below for detail infos about every action object;
 - **detailLink**: *[object] (mandatory)* definition of the link for detail view
-    - **basePath**: *[string] (mandatory)* the path definition for the link
-    - **params**: *[array of strings] (optional)* list of the params used in the previous *basePath*;
-- **sourceFields**: *[object] (optional)* dictionary of fields used in *itemFields* that are external links to other documents; each element is an [object] with the field's name as key and these properties:
+    - **basePath**: *[string] (mandatory)* the path definition for the link (can contain ":" params); the special param `:itemLang` is also available and refers to the record's language (ex.: `/panel/pages/:itemLang/:code`);
+    - **params**: *[array of strings] (optional)* list of the params used in the previous *basePath*; every param must be a field's name or the special param `itemLang` that refers to the record's current language;
+- **sourcedFields**: *[object] (optional)* dictionary of fields used in *itemFields* that are external links to other documents; each element is an [object] with the field's name as key and these properties:
     - **mapTo**: *[string] (mandatory)* name of the attribute in the external document to use;
-    - **collection**: *[string] (mandatory)* name of the collection where to find the external document;
+    - **schemaName**: *[string] (mandatory)* name of the schema that describes the external document;
 - **callbacks**: *[object] (optional)* dictionary of callbacks to perform on every record while rendering *Skelelist*
     - **beforeRendering(currentRecord)**: *[function] (optional)* a function called on every record rendered by *Skelelist*; can edit the record itself before returning it; in particular it can append to the record the *"skelelistOptions"* object that is evaluated by *Skelelist* to perform special tasks (see below);
 
