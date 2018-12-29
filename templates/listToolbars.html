@@ -30,7 +30,7 @@
 <template name="skelelistPagination">
     {{#if skeleIsDataReady this}}
         {{#if (skeleGetReactiveVar this.appendLoadMore)}}
-            <div class="skeleLoadMore">
+            <div class="skeleLoadMore {{loadMoreClass}}">
                 {{i18n "loadMore_lbl"}}
             </div>
         {{/if}}

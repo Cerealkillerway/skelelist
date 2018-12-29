@@ -55,3 +55,14 @@ Template.skelelistLangBar.helpers({
         }
     }
 });
+
+
+// list pagination
+Template.skelelistPagination.helpers({
+    loadMoreClass: function() {
+        if (this.schema.__listView.options.autoLoad === true) {
+            return 'zeroHeight';
+        }
+        return '';
+    }
+});
