@@ -8,6 +8,7 @@ Template.skelelist.onCreated(function() {
     let schema = this.data.schema;
     let collection = schema.__collection;
 
+    this.data.listQuery = new ReactiveVar({});
     schema.listView = new ReactiveVar(this.data.schema.__listView);
 
     Skeletor.subsManagers.countersSubs.subscribe('countCollection', collection);

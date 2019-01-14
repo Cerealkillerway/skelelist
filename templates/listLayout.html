@@ -1,6 +1,6 @@
 <!-- main skelelist template -->
 <template name="skelelist">
-    <div class="skelelist">
+    <div class="skelelist">{{skeleLog this}}
         {{> Template.dynamic template=(listStyle this.schema.__listView.style) data=this}}
     </div>
 </template>
@@ -10,6 +10,10 @@
 <template name="skelelistTable">
     {{> skelelistLangBar}}
     {{> skelelistInfo}}
+
+    {{#if this.schema.__listView.search}}
+        {{> skelelistSearch this}}
+    {{/if}}
 
     {{#if skeleIsDataReady this true}}
         <table class="{{this.schema.__listView.classes}} responsive-table skelelistTable">

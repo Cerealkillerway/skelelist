@@ -135,3 +135,55 @@ function skeleLoadMore(event, instance) {
 
     instance.currentPage.set(currentPage);
 }
+
+
+// skelelist search
+Template.skelelistSearch.events({
+    'click .skelelistSearchBtn': function(event, instance) {
+        let data = instance.data;
+        let schema = data.schema;
+        let collection = schema.__collection;
+        let subManager = schema.__subManager;
+        let listSchema = schema.__listView;
+        let options = {
+            fields: {}
+        };
+
+        for (let field of listSchema.itemFields) {
+            options.fields[field.name] = 1;
+        }
+        for (let param of listSchema.detailLink.params) {
+            options.fields[param] = 1;
+        }
+
+        // TO FIX: this callback is never called more than once
+        // so if you visit another route afterf filtering and then come back
+        // it is not executed again since the subscription is already "ready"
+        callback = function() {
+            instance.data.listQuery.set({last_name: 'REVELLO'});
+        }
+
+        if (subManager) {
+            documentList = Skeletor.subsManagers[subManager].subscribe(
+                'rawFindDocuments',
+                collection,
+                {last_name: 'REVELLO'},
+                options,
+                data.schemaName,
+                null,
+                callback
+            );
+        }
+        else {
+            documentList = Meteor.subscribe(
+                'rawFindDocuments',
+                collection,
+                {last_name: 'REVELLO'},
+                options,
+                data.schemaName,
+                null,
+                callback
+            );
+        }
+    }
+})
