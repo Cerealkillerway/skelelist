@@ -66,3 +66,23 @@ Template.skelelistPagination.helpers({
         return '';
     }
 });
+
+
+// list search bar
+Template.skelelistSearch.helpers(SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
+Template.skelelistSearch.helpers({
+    searchOptions: function() {
+        let instance = Template.instance();
+        let listSchema = instance.data.schema.listView.get();
+        let searchOptions = [];
+
+        _.each(listSchema.search, function(value, key) {
+            let searchOption = value;
+
+            searchOption.name = key;
+            searchOptions.push(searchOption);
+        });
+
+        return searchOptions;
+    }
+});

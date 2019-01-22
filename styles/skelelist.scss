@@ -5,9 +5,6 @@
 .skelelist {
     .skelelistInfo {
         .skeleCounter {
-            background-color: $thirdPanelColor;
-            color: $thirdPanelColorText;
-
             .skeleCounterDescription {
                 display: inline-block;
                 padding: 15px 25px;
@@ -15,9 +12,21 @@
 
             .skeleCounterNumber {
                 display: inline-block;
-                background-color: $secondPanelColor;
                 padding: 15px 25px;
             }
+        }
+    }
+
+    .skelelistSearchBar {
+        margin-bottom: 0;
+        padding-top: 15px;
+
+        .material-icons.prefix {
+            margin-top: 5px;
+        }
+
+        .skelelistSearchBtn {
+            margin-top: 18px;
         }
     }
 

@@ -148,6 +148,7 @@ Template.skelelistSearch.events({
         let options = {
             fields: {}
         };
+        let query = {};
 
         for (let field of listSchema.itemFields) {
             options.fields[field.name] = 1;
@@ -156,18 +157,31 @@ Template.skelelistSearch.events({
             options.fields[param] = 1;
         }
 
+        // build query
+        let $searchOptions = instance.$('.skelelistSearchInput');
+
+        for (let searchOption of $searchOptions) {
+            let $searchOption = $(searchOption);
+            let name = $searchOption.data('name');
+            let value = $searchOption.val();
+
+            if (value.length > 0) {
+                query[name] = value;
+            }
+        }
+
         // TO FIX: this callback is never called more than once
-        // so if you visit another route afterf filtering and then come back
+        // so if you visit another route after filtering and then come back
         // it is not executed again since the subscription is already "ready"
         callback = function() {
-            instance.data.listQuery.set({last_name: 'REVELLO'});
+            instance.data.listQuery.set(query);
         }
 
         if (subManager) {
             documentList = Skeletor.subsManagers[subManager].subscribe(
                 'rawFindDocuments',
                 collection,
-                {last_name: 'REVELLO'},
+                query,
                 options,
                 data.schemaName,
                 null,
@@ -178,7 +192,7 @@ Template.skelelistSearch.events({
             documentList = Meteor.subscribe(
                 'rawFindDocuments',
                 collection,
-                {last_name: 'REVELLO'},
+                query,
                 options,
                 data.schemaName,
                 null,
