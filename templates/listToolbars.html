@@ -43,15 +43,19 @@
     <div class="skelelistSearchBar row">
         {{#each searchOptions}}
             <div class="input-field col s5 m4 l3">
-                <i class="material-icons prefix">search</i>
                 <input id="{{this.name}}SkelelistSearch" data-name="{{this.name}}" class="skelelistSearchInput" type="text">
                 <label for="{{this.name}}SkelelistSearch">{{label this}} {{i18n "searchText_lbl"}}</label>
             </div>
         {{/each}}
 
-        <div class="col s2">
+        <div class="col s3">
             <div class="btn thirdColor skelelistSearchBtn">
+                <i class="material-icons left">search</i>
                 {{i18n "find_btn"}}
+            </div>
+            <div class="btn secondColor skelelistUndoBtn">
+                <i class="material-icons left">clear</i>
+                {{i18n "cancel_btn"}}
             </div>
         </div>
     </div>

@@ -139,6 +139,10 @@ function skeleLoadMore(event, instance) {
 
 // skelelist search
 Template.skelelistSearch.events({
+    'click .skelelistUndoBtn': function(event, instance) {
+        instance.data.listQuery.set({});
+    },
+
     'click .skelelistSearchBtn': function(event, instance) {
         let data = instance.data;
         let schema = data.schema;
@@ -146,7 +150,8 @@ Template.skelelistSearch.events({
         let subManager = schema.__subManager;
         let listSchema = schema.__listView;
         let options = {
-            fields: {}
+            fields: {},
+            caseInsensitiveQuery: true
         };
         let query = {};
 
@@ -166,15 +171,16 @@ Template.skelelistSearch.events({
             let value = $searchOption.val();
 
             if (value.length > 0) {
-                query[name] = value;
+                if (listSchema.search[name].caseInsensitive) {
+                    query[name] = {
+                        '$regex': value,
+                        '$options': 'i'
+                    }
+                }
+                else {
+                    query[name] = value;
+                }
             }
-        }
-
-        // TO FIX: this callback is never called more than once
-        // so if you visit another route after filtering and then come back
-        // it is not executed again since the subscription is already "ready"
-        callback = function() {
-            instance.data.listQuery.set(query);
         }
 
         if (subManager) {
@@ -184,8 +190,7 @@ Template.skelelistSearch.events({
                 query,
                 options,
                 data.schemaName,
-                null,
-                callback
+                null
             );
         }
         else {
@@ -195,9 +200,14 @@ Template.skelelistSearch.events({
                 query,
                 options,
                 data.schemaName,
-                null,
-                callback
+                null
             );
         }
+
+        instance.autorun(() => {
+            if (documentList.ready()) {
+                instance.data.listQuery.set(query);
+            }
+        });
     }
 })
