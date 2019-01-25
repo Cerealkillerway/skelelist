@@ -1,0 +1,57 @@
+body.skelePanelBody {
+    .skelelist {
+        .skelelistActionExtras {
+            .deleteConfirmation {
+                .cancelDeletion {
+                    color: $secondPanelColor;
+                }
+            }
+        }
+
+        .skeleLoadMore {
+            background-color: $thirdPanelColor;
+            color: $thirdPanelColorText;
+
+            &:hover {
+                background-color: lighten($thirdPanelColor, 10%);
+            }
+        }
+
+        .skelelistInfo {
+            .skeleCounter {
+                background-color: $thirdPanelColor;
+                color: $thirdPanelColorText;
+
+                .skeleCounterNumber {
+                    background-color: $secondPanelColor;
+                }
+            }
+        }
+
+        .skelelistSearchBar {
+            background-color: darken($firstPanelColor, 27%);
+
+            .skelelistSearchBtn {
+                background-color: $fourthPanelColor;
+                color: $firstTextColor;
+
+                .material-icons {
+                    color: $firstTextColor;
+                }
+            }
+
+            .skelelistSearchInput {
+                border-color: darken($firstPanelColorText, 10%) !important;
+                color: $firstHoverColor;
+
+                &:focus:not([readonly]) {
+                    box-shadow: 0 1px 0 0 darken($firstPanelColorText, 10%);
+                }
+
+                & + label {
+                    color: darken($firstPanelColorText, 10%) !important;
+                }
+            }
+        }
+    }
+}
