@@ -53,5 +53,11 @@ body.skelePanelBody {
                 }
             }
         }
+
+        .skeleListViewHeader {
+            &:hover {
+                background-color: darken($firstPanelColor, 10%);
+            }
+        }
     }
 }
