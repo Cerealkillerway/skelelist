@@ -32,12 +32,7 @@ body.skelePanelBody {
             background-color: darken($firstPanelColor, 27%);
 
             .skelelistSearchBtn {
-                background-color: $fourthPanelColor;
-                color: $firstTextColor;
-
-                .material-icons {
-                    color: $firstTextColor;
-                }
+                @extend .confirmColor;
             }
 
             .skelelistSearchInput {
@@ -57,6 +52,25 @@ body.skelePanelBody {
         .skeleListViewHeader {
             &:hover {
                 background-color: darken($firstPanelColor, 10%);
+            }
+        }
+
+        tbody {
+            .skelelistCurrentUser {
+                @extend .secondColor;
+
+                a:link {
+                    color: $thirdPanelColorText !important;
+                }
+                a:visited {
+                    color: $thirdPanelColorText !important;
+                }
+                a:hover {
+                    color: $thirdPanelColorText !important;
+                }
+                a:active {
+                    color: $thirdPanelColorText !important;
+                }
             }
         }
     }
