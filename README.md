@@ -92,8 +92,8 @@ usecase: assign `secondColor` class to the "SUPERUSER" role in roles list
 ##### delete
 
 - **confirm**: *[boolean/object] (optional)* defines if the delete action must ask a confirmation; can be set to *true* to use defaults or can be an object that can specify all the available options; (default to false);
-    - **template**: *[string] (optional)* name of the component to use as confirmation UI; default to *skelelistActionDeleteTimerConfirm*; available values: "skelelistActionDeleteConfirm", "skelelistActionDeleteTimerConfirm";
-    - **timeout**: *[number] (optional, available only if template = "skelelistActionDeleteTimerConfirm"); number of milliseconds to use as timeout to confirm deletion (default 3000); must be a multiple of 1000;
+    - **template**: *[string] (optional)* name of the component to use as confirmation UI; available values: "skelelistActionDeleteConfirm", "skelelistActionDeleteTimerConfirm"; (default to *skelelistActionDeleteTimerConfirm)*;
+    - **timeout**: *[number] (optional, available only if template = "skelelistActionDeleteTimerConfirm"); number of milliseconds to use as timeout to confirm deletion (default 3000); must be a multiple of 1000, max 100.000;
 
 
 ### 4 SCHEMA FIELDS OPTIONS

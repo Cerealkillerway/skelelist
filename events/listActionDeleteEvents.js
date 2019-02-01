@@ -52,8 +52,9 @@ Template.skelelistActionDelete.events({
 
 // delete timer confirmation block
 Template.skelelistActionDeleteTimerConfirm.onCreated(function() {
-    let confirmOptions = this.data.actionOptions.confirm;
-    let timeoutSeconds = (confirmOptions.timeout) / 1000 || 3;
+    let actionOptions = this.data.actionOptions;
+    let confirmOptions = actionOptions.confirm;
+    let timeoutSeconds = (actionOptions.timeout) / 1000 || 3;
 
     this.confirmationCounter = new ReactiveVar(timeoutSeconds);
 });
@@ -62,8 +63,9 @@ Template.skelelistActionDeleteTimerConfirm.onCreated(function() {
 Template.skelelistActionDeleteTimerConfirm.onRendered(function() {
     let barWidth = 0;
     let $timerBar = this.$('.determinate');
-    let confirmOptions = this.data.actionOptions.confirm;
-    let timeout = confirmOptions.timeout || 3000;
+    let actionOptions = this.data.actionOptions;
+    let confirmOptions = actionOptions.confirm;
+    let timeout = actionOptions.timeout || 3000;
     let timeoutSeconds = timeout / 1000;
     let intervalTiming = timeout / 100;
     let step = Math.floor(100 / timeoutSeconds);

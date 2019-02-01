@@ -58,16 +58,16 @@ Template.userChangePasswordToolbar.events({
             Meteor.call('updateUserPassword', formContext.item._id, $('#newPassword').val(), function(error, result) {
                 if (error) {
                     if (error.error === 'unauthorized') {
-                        Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
+                        Materialize.toast(Skeletor.Skelelang.i18n.get('permissions_error'), 5000, 'permissionsError');
                         SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
                     }
                     else {
-                        Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
+                        Materialize.toast(Skeletor.Skelelang.i18n.get('serverError_error'), 5000, 'error');
                         SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
                     }
                 }
                 else {
-                    Materialize.toast(i18n.get('passwordCanged_msg', formContext.item.username), 5000, 'success');
+                    Materialize.toast(Skeletor.Skelelang.i18n.get('passwordCanged_msg', formContext.item.username), 5000, 'success');
                     $('#skeletorUserChangePasswordModal').modal('close');
                 }
             });
