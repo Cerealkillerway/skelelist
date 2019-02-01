@@ -170,12 +170,24 @@ Template.skelelistSearch.events({
             caseInsensitiveQuery: true
         };
         let query = {};
+        let currentLang = FlowRouter.getParam('itemLang');
+
+        function handleField(fieldName) {
+            let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, fieldName);
+
+            if (fieldSchema.i18n === false) {
+                options.fields[fieldName] = 1;
+            }
+            else {
+                options.fields[`${currentLang}---${fieldName}`] = 1;
+            }
+        }
 
         for (let field of listSchema.itemFields) {
-            options.fields[field.name] = 1;
+            handleField(field.name);
         }
         for (let param of listSchema.detailLink.params) {
-            options.fields[param] = 1;
+            handleField(param);
         }
 
         // build query
@@ -184,20 +196,28 @@ Template.skelelistSearch.events({
         for (let searchOption of $searchOptions) {
             let $searchOption = $(searchOption);
             let name = $searchOption.data('name');
+            let fieldName = name;
             let value = $searchOption.val();
+            let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, name);
+
+            if (fieldSchema.i18n !== false) {
+                fieldName = `${currentLang}---${name}`;
+            }
 
             if (value.length > 0) {
                 if (listSchema.search[name].caseInsensitive) {
-                    query[name] = {
+                    query[fieldName] = {
                         '$regex': value,
                         '$options': 'i'
                     }
                 }
                 else {
-                    query[name] = value;
+                    query[fieldName] = value;
                 }
             }
         }
+
+        console.log(query);
 
         if (subManager) {
             documentList = Skeletor.subsManagers[subManager].subscribe(
