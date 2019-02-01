@@ -85,14 +85,28 @@ function skeleLoadMore(event, instance) {
     let options = {
         fields: {}
     };
+    let currentLang = FlowRouter.getParam('itemLang');
 
     currentPage++;
 
+    function handleFieldOption(fieldName) {
+        let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, fieldName);
+
+        if (fieldSchema) {
+            if (fieldSchema.i18n === false) {
+                options.fields[fieldName] = 1;
+            }
+            else {
+                options.fields[`${currentLang}---${fieldName}`] = 1;
+            }
+        }
+    }
+
     for (let field of listSchema.itemFields) {
-        options.fields[field.name] = 1;
+        handleFieldOption(field.name);
     }
     for (let param of listSchema.detailLink.params) {
-        options.fields[param] = 1;
+        handleFieldOption(param);
     }
 
     SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
@@ -118,6 +132,7 @@ function skeleLoadMore(event, instance) {
             options,
             data.schemaName,
             currentPage,
+            currentLang,
             loadMoreDocuments
         );
     }
@@ -129,6 +144,7 @@ function skeleLoadMore(event, instance) {
             options,
             data.schemaName,
             currentPage,
+            currentLang,
             loadMoreDocuments
         );
     }
