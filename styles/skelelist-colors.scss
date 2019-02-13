@@ -1,13 +1,5 @@
 body.skelePanelBody {
     .skelelist {
-        .skelelistActionExtras {
-            .deleteConfirmation {
-                .cancelDeletion {
-                    color: $secondPanelColor;
-                }
-            }
-        }
-
         .skeleLoadMore {
             background-color: $thirdPanelColor;
             color: $thirdPanelColorText;
