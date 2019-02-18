@@ -30,8 +30,8 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each getDocumentsList this}}
-                    {{#with listRecord this ../schema.listView ../schema}}
+                {{#each (getDocumentsList this)}}
+                    {{#with (listRecord this ../schema.listView ../schema)}}
                         <tr data-id="{{this._id}}" class="{{this.skelelistOptions.class}}">
                             {{#each (skeleGetReactiveVar ../../schema.listView property="itemFields")}}
                                 {{#with field this ../.. ../../../schema ../../..}}
@@ -47,7 +47,7 @@
                                 {{/with}}
                             {{/each}}
 
-                            {{> skelelistActions (actionsData this)}}
+                            {{> skelelistActions (actionsData this skeleGetInstance)}}
                         </tr>
                     {{/with}}
                 {{/each}}

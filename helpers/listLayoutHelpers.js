@@ -9,14 +9,14 @@ Template.skelelist.helpers({
 // list table view
 Template.skelelistTable.helpers(SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
 Template.skelelistTable.helpers({
-    actionsData: function(record) {
+    actionsData: function(record, skelelistInstance) {
         const instance = Template.instance();
 
         let data = {
             schema: instance.data.schema,
             schemaName: instance.data.schemaName,
             record: record,
-            skelelistInstance: instance.data.skelelistInstance
+            skelelistInstance: skelelistInstance
         };
 
         return data;
