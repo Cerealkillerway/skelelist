@@ -136,9 +136,16 @@ Template.skelelistActionDeleteTimerConfirm.events({
                         SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                 }
+                else {
+                    // fix for reactive aggregate not properly updating after delete
+                    let id = $(event.target).closest('tr').data('id');
+
+                    $(`*[data-id="${id}"]`).hide(0);
+                }
             });
         }, 600);
     },
+
     'click .cancelDeletion': function(event, instance) {
         Meteor.clearTimeout(instance.restoreDeleteBtnTimeout);
         instance.cancelDeletion(instance);
@@ -171,8 +178,15 @@ Template.skelelistActionDeleteConfirm.events({
                     SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                 }
             }
+            else {
+                // fix for reactive aggregate not properly updating after delete
+                let id = $(event.target).closest('tr').data('id');
+
+                $(`*[data-id="${id}"]`).hide(0);
+            }
         });
     },
+
     'click .cancelDeletion': function(event, instance) {
         instance.$('.deleteConfirmation').addClass('hide');
         instance.$('.skelelistDelete').removeClass('hide');

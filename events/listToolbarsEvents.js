@@ -217,8 +217,6 @@ Template.skelelistSearch.events({
             }
         }
 
-        console.log(query);
-
         if (subManager) {
             documentList = Skeletor.subsManagers[subManager].subscribe(
                 'rawFindDocuments',
