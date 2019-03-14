@@ -1,6 +1,6 @@
 Package.describe({
     name: 'cerealkiller:skelelist',
-    version: '3.7.23',
+    version: '4.0.13',
     summary: 'collection views',
     // URL to the Git repository containing the source code for this package.
     git: '',
