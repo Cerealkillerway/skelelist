@@ -58,7 +58,7 @@ Template.skelelistPagination.onCreated(function() {
             let elementBottom = elementTop + $loadMore.height();
 
             if ((elementTop <= pageBottom)) {
-                SkeleUtils.GlobalUtilities.logger('triggering autoLoad ->', 'skelelist');
+                Skeletor.SkeleUtils.GlobalUtilities.logger('triggering autoLoad ->', 'skelelist');
                 skeleLoadMore(this, instance);
             }
         });
@@ -90,7 +90,7 @@ function skeleLoadMore(event, instance) {
     currentPage++;
 
     function handleFieldOption(fieldName) {
-        let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, fieldName);
+        let fieldSchema = Skeletor.SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, fieldName);
 
         if (fieldSchema) {
             if (fieldSchema.i18n === false) {
@@ -109,14 +109,14 @@ function skeleLoadMore(event, instance) {
         handleFieldOption(param);
     }
 
-    SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
+    Skeletor.SkeleUtils.GlobalUtilities.logger(`Loading page ${currentPage}`, 'skelelist');
 
     function loadMoreDocuments() {
         totalNumberOfDocuments = Counts.get(`${collection}Counter`);
         numberOfLoadedDocuments = Skeletor.Data[collection].find().count();
 
         if ((totalNumberOfDocuments - numberOfLoadedDocuments) === 0) {
-            SkeleUtils.GlobalUtilities.logger('All documents loaded...', 'skelelist');
+            Skeletor.SkeleUtils.GlobalUtilities.logger('All documents loaded...', 'skelelist');
 
             instance.data.appendLoadMore.set(false);
         }
@@ -173,7 +173,7 @@ Template.skelelistSearch.events({
         let currentLang = FlowRouter.getParam('itemLang');
 
         function handleField(fieldName) {
-            let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, fieldName);
+            let fieldSchema = Skeletor.SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, fieldName);
 
             if (fieldSchema.i18n === false) {
                 options.fields[fieldName] = 1;
@@ -198,7 +198,7 @@ Template.skelelistSearch.events({
             let name = $searchOption.data('name');
             let fieldName = name;
             let value = $searchOption.val();
-            let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, name);
+            let fieldSchema = Skeletor.SkeleUtils.GlobalUtilities.fieldSchemaLookup(schema.fields, name);
 
             if (fieldSchema.i18n !== false) {
                 fieldName = `${currentLang}---${name}`;

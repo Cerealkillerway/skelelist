@@ -29,8 +29,8 @@ Template.skelelistActions.onRendered(function() {
 
         // handle action's permission option
         if (actionData.actionOptions.permission) {
-            if (!SkeleUtils.Permissions.checkPermissions(actionData.actionOptions.permission)) {
-                SkeleUtils.GlobalUtilities.logger('No permissions for action ' + action.name, 'skelelist');
+            if (!Skeletor.SkeleUtils.Permissions.checkPermissions(actionData.actionOptions.permission)) {
+                Skeletor.SkeleUtils.GlobalUtilities.logger('No permissions for action ' + action.name, 'skelelist');
                 return false;
             }
         }
@@ -39,7 +39,7 @@ Template.skelelistActions.onRendered(function() {
             Blaze.renderWithData(templateToRender, actionData, this.$('.skelelistActions')[0]);
         }
         else {
-            SkeleUtils.GlobalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError', false, true);
+            Skeletor.SkeleUtils.GlobalUtilities.logger('tried to render ' + action + ' action, but SkelelistAction' + action.capitalize() + ' template does not exists', 'skeleError', false, true);
         }
     });
 });

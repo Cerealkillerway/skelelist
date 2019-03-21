@@ -2,7 +2,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 
 // query and infos
-Template.skelelistInfo.helpers(SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
+Template.skelelistInfo.helpers(Skeletor.SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
 Template.skelelistInfo.helpers({
     showTotalNumber: function() {
         let instance = Template.instance();
@@ -26,7 +26,7 @@ Template.skelelistLangBar.helpers({
         }
 
         for (const field of instance.data.schema.__listView.itemFields) {
-            let fieldSchema = SkeleUtils.GlobalUtilities.fieldSchemaLookup(instance.data.schema.fields, field.name);
+            let fieldSchema = Skeletor.SkeleUtils.GlobalUtilities.fieldSchemaLookup(instance.data.schema.fields, field.name);
 
             if (fieldSchema.i18n !== false) {
                 return true;
@@ -69,7 +69,7 @@ Template.skelelistPagination.helpers({
 
 
 // list search bar
-Template.skelelistSearch.helpers(SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
+Template.skelelistSearch.helpers(Skeletor.SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
 Template.skelelistSearch.helpers({
     searchOptions: function() {
         let instance = Template.instance();

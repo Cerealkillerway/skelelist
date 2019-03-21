@@ -24,7 +24,7 @@ Template.skelelistActionDelete.events({
                 Blaze.renderWithData(confirmTemplate, data, $extrasContainer[0]);
             }
             else {
-                SkeleUtils.GlobalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError', false, true);
+                Skeletor.SkeleUtils.GlobalUtilities.logger('tried to render ' + confirmTemplateName + ' as delete confirm template, but it does not exists', 'skeleError', false, true);
             }
             // hide action buttons block
             data.actionContainerInstance.$('.skelelistActions').hide(0);
@@ -38,11 +38,11 @@ Template.skelelistActionDelete.events({
                 if (error) {
                     if (result.error === 'unauthorized') {
                         Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
-                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                        Skeletor.SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                     else {
                         Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
-                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                        Skeletor.SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                 }
             });
@@ -129,11 +129,11 @@ Template.skelelistActionDeleteTimerConfirm.events({
                 if (error) {
                     if (result.error === 'unauthorized') {
                         Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
-                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                        Skeletor.SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                     else {
                         Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
-                        SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                        Skeletor.SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                     }
                 }
                 else {
@@ -171,11 +171,11 @@ Template.skelelistActionDeleteConfirm.events({
             if (error) {
                 if (result.error === 'unauthorized') {
                     Materialize.toast(i18n.get('permissions_error'), 5000, 'permissionsError');
-                    SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                    Skeletor.SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                 }
                 else {
                     Materialize.toast(i18n.get('serverError_error'), 5000, 'error');
-                    SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
+                    Skeletor.SkeleUtils.GlobalUtilities.logger(result, 'skeleWarning', false, true);
                 }
             }
             else {

@@ -18,7 +18,7 @@ Template.skelelist.onCreated(function() {
 Template.skelelist.onRendered(function() {
     let options = this.data.schema.listView.get().options;
 
-    SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
+    Skeletor.SkeleUtils.GlobalUtilities.scrollTo(0, Skeletor.configuration.animations.onRendered);
 });
 
 

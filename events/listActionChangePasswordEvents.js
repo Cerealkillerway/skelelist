@@ -59,11 +59,11 @@ Template.userChangePasswordToolbar.events({
                 if (error) {
                     if (error.error === 'unauthorized') {
                         Materialize.toast(Skeletor.Skelelang.i18n.get('permissions_error'), 5000, 'permissionsError');
-                        SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
+                        Skeletor.SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
                     }
                     else {
                         Materialize.toast(Skeletor.Skelelang.i18n.get('serverError_error'), 5000, 'error');
-                        SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
+                        Skeletor.SkeleUtils.GlobalUtilities.logger(error, 'skeleWarning', false, true);
                     }
                 }
                 else {

@@ -7,7 +7,7 @@ Template.skelelist.helpers({
 
 
 // list table view
-Template.skelelistTable.helpers(SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
+Template.skelelistTable.helpers(Skeletor.SkeleUtils.GlobalHelpers.skelelistGeneralHelpers);
 Template.skelelistTable.helpers({
     actionsData: function(record, skelelistInstance) {
         const instance = Template.instance();
