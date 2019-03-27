@@ -1,7 +1,7 @@
 Package.describe({
     name: 'cerealkiller:skelelist',
-    version: '4.0.13',
-    summary: 'collection views',
+    version: '5.0.0',
+    summary: 'list views for skeletor',
     // URL to the Git repository containing the source code for this package.
     git: '',
     documentation: 'README.md'
@@ -9,9 +9,14 @@ Package.describe({
 
 Package.onUse(function(api) {
     // namespace
-    api.addFiles(['namespace.js'], ['client', 'server']);
+    api.addFiles([
+        'namespace.js'
+    ],
+    ['client', 'server']);
+
 
     api.versionsFrom('METEOR@1.8.0.2');
+
 
     // dependencies
     api.use([
@@ -23,6 +28,7 @@ Package.onUse(function(api) {
     ],
     ['client']);
 
+
     api.use([
         'check',
         'ecmascript',
@@ -31,31 +37,37 @@ Package.onUse(function(api) {
     ],
     ['client', 'server']);
 
-    // styles
-    api.addFiles(['styles/skelelist.scss'], ['client']);
 
-    // templates
+    // styles
     api.addFiles([
-        'templates/listLayout.html',
-        'templates/listToolbars.html',
-        'templates/listActions.html',
-        'templates/listActionDelete.html',
-        'templates/listActionChangePassword.html',
-        'templates/listCommonAssets.html'
+        'styles/skelelist.scss'
     ],
     ['client']);
 
+
+    // templates
+    api.addFiles([
+        'templates/list-layout.html',
+        'templates/list-toolbars.html',
+        'templates/list-actions.html',
+        'templates/list-action-delete.html',
+        'templates/list-action-change-password.html',
+        'templates/list-common-assets.html'
+    ],
+    ['client']);
+
+
     // libraries
     api.addFiles([
-        'events/listLayoutEvents.js',
-        'events/listToolbarsEvents.js',
-        'events/listActionsEvents.js',
-        'events/listActionDeleteEvents.js',
-        'events/listActionChangePasswordEvents.js',
+        'events/list-layout-events.js',
+        'events/list-toolbars-events.js',
+        'events/list-actions-events.js',
+        'events/list-action-delete-events.js',
+        'events/list-action-change-password-events.js',
 
-        'helpers/listLayoutHelpers.js',
-        'helpers/listToolbarsHelpers.js',
-        'helpers/listActionDeleteHelpers.js'
+        'helpers/list-layout-helpers.js',
+        'helpers/list-toolbars-helpers.js',
+        'helpers/list-action-delete-helpers.js'
     ],
     ['client']);
 
@@ -64,6 +76,7 @@ Package.onUse(function(api) {
     api.export(['Skelelist']);
 
 });
+
 
 Package.onTest(function(api) {
     api.use([
