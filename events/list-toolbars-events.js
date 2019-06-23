@@ -55,7 +55,6 @@ Template.skelelistPagination.onCreated(function() {
             let pageTop = $(window).scrollTop();
             let pageBottom = pageTop + $(window).height() + triggeringOffset;
             let elementTop = $loadMore.offset().top;
-            let elementBottom = elementTop + $loadMore.height();
 
             if ((elementTop <= pageBottom)) {
                 Skeletor.SkeleUtils.GlobalUtilities.logger('triggering autoLoad ->', 'skelelist');
@@ -126,7 +125,7 @@ function skeleLoadMore(event, instance) {
 
     if (subManager) {
         documentList = Skeletor.subsManagers[subManager].subscribe(
-            'rawFindDocuments',
+            'findDocuments',
             collection,
             {},
             options,
@@ -138,7 +137,7 @@ function skeleLoadMore(event, instance) {
     }
     else {
         documentList = Meteor.subscribe(
-            'rawFindDocuments',
+            'findDocuments',
             collection,
             {},
             options,
@@ -219,7 +218,7 @@ Template.skelelistSearch.events({
 
         if (subManager) {
             documentList = Skeletor.subsManagers[subManager].subscribe(
-                'rawFindDocuments',
+                'findDocuments',
                 collection,
                 query,
                 options,
@@ -229,7 +228,7 @@ Template.skelelistSearch.events({
         }
         else {
             documentList = Meteor.subscribe(
-                'rawFindDocuments',
+                'findDocuments',
                 collection,
                 query,
                 options,
